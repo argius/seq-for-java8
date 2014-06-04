@@ -1,0 +1,193 @@
+package net.argius.java8.seq;
+
+import static net.argius.java8.seq.LongSequenceFactory.*;
+import java.util.*;
+import java.util.function.*;
+import java.util.stream.*;
+
+/**
+ * LongSequence is the variation of Sequence.
+ */
+public interface LongSequence {
+
+    static LongSequence of(long... a) {
+        return createWithCopy(a);
+    }
+
+    static LongSequence of(Collection<Long> collection) {
+        // TODO boxed?
+        return Sequence.of(collection).mapToLong(Long::longValue);
+    }
+
+    static LongSequence of(LongStream stream) {
+        return createWithoutCopy(stream.toArray());
+    }
+
+    static LongSequence seq(long... a) {
+        return createWithCopy(a);
+    }
+
+    static LongSequence seq(Collection<Long> collection) {
+        return Sequence.of(collection).mapToLong(Long::intValue);
+    }
+
+    static LongSequence seq(LongStream stream) {
+        return createWithoutCopy(stream.toArray());
+    }
+
+    static LongSequence empty() {
+        return LongSequenceFactory.EMPTY;
+    }
+
+    // accessors
+
+    int size();
+
+    long at(int index);
+
+    // filters
+
+    default LongSequence filter(LongPredicate predicate) {
+        final int n = size();
+        int p = 0;
+        long[] a = new long[n];
+        for (int i = 0; i < n; i++) {
+            long x = at(i);
+            if (predicate.test(x))
+                a[p++] = x;
+        }
+        return createWithoutCopy(Arrays.copyOf(a, p));
+    }
+
+    default LongSequence subSequence(int from, int to) {
+        final int n = size() - 1;
+        final int to0 = (to < n) ? to : n;
+        return createWithoutCopy(Arrays.copyOfRange(toArray(), from, to0 + 1));
+    }
+
+    default OptionalLong head() {
+        return (size() == 0) ? OptionalLong.empty() : OptionalLong.of(at(0));
+    }
+
+    default LongSequence tail() {
+        return subSequence(1, Integer.MAX_VALUE);
+    }
+
+    OptionalLong max();
+
+    OptionalLong min();
+
+    // maps
+
+    default LongSequence map(LongUnaryOperator mapper) {
+        final int n = size();
+        long[] values = toArray();
+        long[] a = new long[n];
+        for (int i = 0; i < n; i++)
+            a[i] = mapper.applyAsLong(values[i]);
+        return createWithoutCopy(a);
+    }
+
+    default <R> Sequence<R> mapToObj(LongFunction<R> mapper) {
+        final int n = size();
+        List<R> a = new ArrayList<>(n);
+        for (int i = 0; i < n; i++)
+            a.add(mapper.apply(at(i)));
+        return Sequence.of(a);
+    }
+
+    // reduces
+
+    default long fold(long value, LongBinaryOperator f) {
+        switch (size()) {
+        case 0:
+            return value;
+        case 1:
+            return f.applyAsLong(value, at(0));
+        default:
+            return f.applyAsLong(value, tail().fold(at(0), f));
+        }
+    }
+
+    default long reduce(long identity, LongBinaryOperator op) {
+        long result = identity;
+        for (long element : toArray())
+            result = op.applyAsLong(result, element);
+        return result;
+    }
+
+    default LongSequence distinct() {
+        return createWithoutCopy(stream().distinct());
+    }
+
+    long sum();
+
+    default double average() {
+        return sum() * 1d / size();
+    }
+
+    // sorts
+
+    default LongSequence sort() {
+        long[] a = toArray();
+        Arrays.sort(a);
+        return createWithoutCopy(a);
+    }
+
+    default LongSequence sortWith(LongComparator cmp) {
+        return sortWith(0, size() - 1, cmp);
+    }
+
+    LongSequence sortWith(int fromIndex, int toIndex, LongComparator cmp);
+
+    default LongSequence reverse() {
+        long[] a = toArray();
+        final int size = a.length;
+        final int n = a.length / 2;
+        for (int i = 0, j = size - 1; i < n; i++, j--) {
+            long x = a[j];
+            a[j] = a[i];
+            a[i] = x;
+        }
+        return createWithoutCopy(a);
+    }
+
+    // mergers
+
+    default LongSequence concat(LongSequence first, LongSequence... rest) {
+        final int selfLength = size();
+        final int firstLength = first.size();
+        int newLength = selfLength;
+        newLength += firstLength;
+        for (LongSequence o : rest)
+            newLength += o.size();
+        long[] a = Arrays.copyOf(toArray(), newLength);
+        int p = selfLength;
+        System.arraycopy(first.toArray(), 0, a, p, firstLength);
+        p += firstLength;
+        for (LongSequence o : rest) {
+            final int length = o.size();
+            System.arraycopy(o.toArray(), 0, a, p, length);
+            p += length;
+        }
+        return createWithoutCopy(a);
+    }
+
+    // converters
+
+    long[] toArray();
+
+    default LongStream stream() {
+        return LongStream.of(toArray());
+    }
+
+    // terminators
+
+    default void forEach(LongConsumer action) {
+        final int n = size();
+        long[] values = toArray();
+        for (int i = 0; i < n; i++)
+            action.accept(values[i]);
+    }
+
+}
