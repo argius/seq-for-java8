@@ -5,17 +5,9 @@ import java.util.*;
 import java.util.function.*;
 import java.util.stream.*;
 
-/**
- * Sequence is similar to an ummodifiable List.
- * 
- * @param <E>
- *            element type
- */
 public interface Sequence<E> extends Iterable<E> {
 
-    // factories
-
-    @SafeVarargs
+@SafeVarargs    
     static <E> Sequence<E> of(E... a) {
         return createWithCopy(a);
     }
@@ -28,7 +20,7 @@ public interface Sequence<E> extends Iterable<E> {
         return createWithoutCopy(stream.collect(Collectors.toList()));
     }
 
-    @SafeVarargs
+@SafeVarargs    
     static <E> Sequence<E> seq(E... a) {
         return createWithCopy(a);
     }
@@ -54,37 +46,13 @@ public interface Sequence<E> extends Iterable<E> {
         return seq;
     }
 
-    // accessors
-
     int size();
 
     default E at(int index) {
         return toArray()[index];
     }
 
-    // filters
-
     Sequence<E> filter(Predicate<? super E> predicate);
-
-    // List<E> a = new ArrayList<>();
-    // forEach(x -> {
-    // if (predicate.test(x))
-    // a.add(x);
-    // });
-    // return SequenceFactory.createWithoutCopy(a);
-    // List<E> list = toList();
-    // final int n = list.size();
-    // E[] a = generator.apply(n);
-    // for (int i = 0; i < n; i++) {
-    // a[i] = list.get(i);
-    // }
-    // final int n = size();
-    // @SuppressWarnings("unchecked")
-    // E[] a = (E[]) new Object[n];
-    // for (int i = 0; i < n; i++) {
-    // a[i] = list.get(i);
-    // return SequenceFactory.createWithoutCopy(a);
-    // }
 
     default Optional<E> head() {
         return (size() == 0) ? Optional.empty() : Optional.of(at(0));
@@ -99,8 +67,6 @@ public interface Sequence<E> extends Iterable<E> {
         final int to0 = (to < n) ? to : n;
         return seq(toList().subList(from, to0 + 1));
     }
-
-    // maps
 
     default <R> Sequence<R> map(Function<? super E, ? extends R> mapper) {
         final int n = size();
@@ -135,8 +101,6 @@ public interface Sequence<E> extends Iterable<E> {
         return DoubleSequenceFactory.createWithoutCopy(a);
     }
 
-    // reduces
-
     default E reduce(E identity, BinaryOperator<E> op) {
         E result = identity;
         for (E element : toArray())
@@ -155,34 +119,25 @@ public interface Sequence<E> extends Iterable<E> {
         }
     }
 
-    default Sequence<E> distinct() {
-        return createWithoutCopy(new LinkedHashSet<>(toList()));
-    }
-
-    // combinations
-
-    @SuppressWarnings("unchecked")
-    default Sequence<E> concat(Sequence<? extends E> first, Sequence<? extends E>... rest) {
-        // XXX varargs
-        final int selfLength = size();
-        final int firstLength = first.size();
-        int newLength = selfLength;
-        newLength += firstLength;
-        for (Sequence<? extends E> o : rest)
-            newLength += o.size();
-        E[] a = Arrays.copyOf(toArray(), newLength);
-        int p = selfLength;
-        System.arraycopy(first.toArray(), 0, a, p, firstLength);
-        p += firstLength;
-        for (Sequence<? extends E> o : rest) {
-            final int length = o.size();
-            System.arraycopy(o.toArray(), 0, a, p, length);
-            p += length;
-        }
-        return createWithoutCopy(a);
-    }
-
-    // sorts
+    // List<E> a = new ArrayList<>();
+    // forEach(x -> {
+    // if (predicate.test(x))
+    // a.add(x);
+    // });
+    // return SequenceFactory.createWithoutCopy(a);
+    // List<E> list = toList();
+    // final int n = list.size();
+    // E[] a = generator.apply(n);
+    // for (int i = 0; i < n; i++) {
+    // a[i] = list.get(i);
+    // }
+    // final int n = size();
+    // @SuppressWarnings("unchecked")
+    // E[] a = (E[]) new Object[n];
+    // for (int i = 0; i < n; i++) {
+    // a[i] = list.get(i);
+    // return SequenceFactory.createWithoutCopy(a);
+    // }
 
     default Sequence<E> sort() {
         E[] values = toArray();
@@ -208,14 +163,29 @@ public interface Sequence<E> extends Iterable<E> {
         return createWithoutCopy(a);
     }
 
-    // converters
-
-    default List<E> toList() {
-        return Arrays.asList(toArray());
+    default Sequence<E> distinct() {
+        return createWithoutCopy(new LinkedHashSet<>(toList()));
     }
 
-    default Stream<E> stream() {
-        return toList().stream();
+    @SuppressWarnings("unchecked")
+    default Sequence<E> concat(Sequence<? extends E> first, Sequence<? extends E>... rest) {
+        // XXX varargs
+        final int selfLength = size();
+        final int firstLength = first.size();
+        int newLength = selfLength;
+        newLength += firstLength;
+        for (Sequence<? extends E> o : rest)
+            newLength += o.size();
+        E[] a = Arrays.copyOf(toArray(), newLength);
+        int p = selfLength;
+        System.arraycopy(first.toArray(), 0, a, p, firstLength);
+        p += firstLength;
+        for (Sequence<? extends E> o : rest) {
+            final int length = o.size();
+            System.arraycopy(o.toArray(), 0, a, p, length);
+            p += length;
+        }
+        return createWithoutCopy(a);
     }
 
     E[] toArray();
@@ -244,6 +214,10 @@ public interface Sequence<E> extends Iterable<E> {
         return a;
     }
 
+    default List<E> toList() {
+        return Arrays.asList(toArray());
+    }
+
     default Set<E> toSet() {
         Set<E> set = new HashSet<>();
         Collections.addAll(set, toArray());
@@ -262,6 +236,10 @@ public interface Sequence<E> extends Iterable<E> {
         for (E k : toArray())
             m.put(mapper.apply(k), k);
         return m;
+    }
+
+    default Stream<E> stream() {
+        return toList().stream();
     }
 
 }

@@ -5,12 +5,9 @@ import java.util.*;
 import java.util.function.*;
 import java.util.stream.*;
 
-/**
- * LongSequence is the variation of Sequence.
- */
 public interface LongSequence {
 
-    static LongSequence of(long... a) {
+@SafeVarargs    static LongSequence of(long... a) {
         return createWithCopy(a);
     }
 
@@ -23,7 +20,7 @@ public interface LongSequence {
         return createWithoutCopy(stream.toArray());
     }
 
-    static LongSequence seq(long... a) {
+@SafeVarargs    static LongSequence seq(long... a) {
         return createWithCopy(a);
     }
 
@@ -39,13 +36,9 @@ public interface LongSequence {
         return LongSequenceFactory.EMPTY;
     }
 
-    // accessors
-
     int size();
 
     long at(int index);
-
-    // filters
 
     default LongSequence filter(LongPredicate predicate) {
         final int n = size();
@@ -59,12 +52,6 @@ public interface LongSequence {
         return createWithoutCopy(Arrays.copyOf(a, p));
     }
 
-    default LongSequence subSequence(int from, int to) {
-        final int n = size() - 1;
-        final int to0 = (to < n) ? to : n;
-        return createWithoutCopy(Arrays.copyOfRange(toArray(), from, to0 + 1));
-    }
-
     default OptionalLong head() {
         return (size() == 0) ? OptionalLong.empty() : OptionalLong.of(at(0));
     }
@@ -73,11 +60,15 @@ public interface LongSequence {
         return subSequence(1, Integer.MAX_VALUE);
     }
 
+    default LongSequence subSequence(int from, int to) {
+        final int n = size() - 1;
+        final int to0 = (to < n) ? to : n;
+        return createWithoutCopy(Arrays.copyOfRange(toArray(), from, to0 + 1));
+    }
+
     OptionalLong max();
 
     OptionalLong min();
-
-    // maps
 
     default LongSequence map(LongUnaryOperator mapper) {
         final int n = size();
@@ -96,7 +87,12 @@ public interface LongSequence {
         return Sequence.of(a);
     }
 
-    // reduces
+    default long reduce(long identity, LongBinaryOperator op) {
+        long result = identity;
+        for (long element : toArray())
+            result = op.applyAsLong(result, element);
+        return result;
+    }
 
     default long fold(long value, LongBinaryOperator f) {
         switch (size()) {
@@ -109,15 +105,11 @@ public interface LongSequence {
         }
     }
 
-    default long reduce(long identity, LongBinaryOperator op) {
-        long result = identity;
-        for (long element : toArray())
-            result = op.applyAsLong(result, element);
-        return result;
-    }
-
-    default LongSequence distinct() {
-        return createWithoutCopy(stream().distinct());
+    default void forEach(LongConsumer action) {
+        final int n = size();
+        long[] values = toArray();
+        for (int i = 0; i < n; i++)
+            action.accept(values[i]);
     }
 
     long sum();
@@ -125,8 +117,6 @@ public interface LongSequence {
     default double average() {
         return sum() * 1d / size();
     }
-
-    // sorts
 
     default LongSequence sort() {
         long[] a = toArray();
@@ -152,7 +142,9 @@ public interface LongSequence {
         return createWithoutCopy(a);
     }
 
-    // mergers
+    default LongSequence distinct() {
+        return createWithoutCopy(stream().distinct());
+    }
 
     default LongSequence concat(LongSequence first, LongSequence... rest) {
         final int selfLength = size();
@@ -173,21 +165,10 @@ public interface LongSequence {
         return createWithoutCopy(a);
     }
 
-    // converters
-
     long[] toArray();
 
     default LongStream stream() {
         return LongStream.of(toArray());
-    }
-
-    // terminators
-
-    default void forEach(LongConsumer action) {
-        final int n = size();
-        long[] values = toArray();
-        for (int i = 0; i < n; i++)
-            action.accept(values[i]);
     }
 
 }

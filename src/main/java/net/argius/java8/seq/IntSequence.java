@@ -5,14 +5,9 @@ import java.util.*;
 import java.util.function.*;
 import java.util.stream.*;
 
-/**
- * IntSequence is the variation of Sequence, that is primitive int version.
- */
 public interface IntSequence {
 
-    // factories
-
-    static IntSequence of(int... a) {
+@SafeVarargs    static IntSequence of(int... a) {
         return createWithCopy(a);
     }
 
@@ -24,7 +19,7 @@ public interface IntSequence {
         return createWithoutCopy(stream.toArray());
     }
 
-    static IntSequence seq(int... a) {
+@SafeVarargs    static IntSequence seq(int... a) {
         return createWithCopy(a);
     }
 
@@ -36,50 +31,13 @@ public interface IntSequence {
         return createWithoutCopy(stream.toArray());
     }
 
-    static IntSequence range(int start, int end) {
-        IntUnaryOperator generator = x -> x + 1;
-        return range(start, end, generator);
-    }
-
-    static IntSequence range(int start, int end, IntUnaryOperator adder) {
-        int length = end - start + 1;
-        // TODO range check
-        // assert length >= 0;
-        if (length <= 0)
-            return empty();
-        if (length == 1)
-            return seq(start);
-        int[] a = new int[length];
-        a[0] = start;
-        int x = start;
-        int newLength = 1;
-        for (int i = 1;; i++) {
-            x = adder.applyAsInt(x);
-            if (x > end)
-                break;
-            a[i] = x;
-            ++newLength;
-        }
-        return createWithoutCopy(Arrays.copyOf(a, newLength));
-    }
-
     static IntSequence empty() {
         return IntSequenceFactory.EMPTY;
     }
 
-    // accessors
-
     int size();
 
     int at(int index);
-
-    default IntSequence subSequence(int from, int to) {
-        final int n = size() - 1;
-        final int to0 = (to < n) ? to : n;
-        return createWithoutCopy(Arrays.copyOfRange(toArray(), from, to0 + 1));
-    }
-
-    // filters
 
     default IntSequence filter(IntPredicate predicate) {
         final int n = size();
@@ -101,11 +59,15 @@ public interface IntSequence {
         return subSequence(1, Integer.MAX_VALUE);
     }
 
+    default IntSequence subSequence(int from, int to) {
+        final int n = size() - 1;
+        final int to0 = (to < n) ? to : n;
+        return createWithoutCopy(Arrays.copyOfRange(toArray(), from, to0 + 1));
+    }
+
     OptionalInt max();
 
     OptionalInt min();
-
-    // maps
 
     default IntSequence map(IntUnaryOperator mapper) {
         final int n = size();
@@ -125,7 +87,13 @@ public interface IntSequence {
         return Sequence.of(a);
     }
 
-    // reduces
+    default int reduce(int identity, IntBinaryOperator op) {
+        // TODO check
+        int result = identity;
+        for (int element : toArray())
+            result = op.applyAsInt(result, element);
+        return result;
+    }
 
     default int fold(int value, IntBinaryOperator f) {
         switch (size()) {
@@ -138,16 +106,11 @@ public interface IntSequence {
         }
     }
 
-    default int reduce(int identity, IntBinaryOperator op) {
-        // TODO check
-        int result = identity;
-        for (int element : toArray())
-            result = op.applyAsInt(result, element);
-        return result;
-    }
-
-    default IntSequence distinct() {
-        return createWithoutCopy(IntStream.of(toArray()).distinct());
+    default void forEach(IntConsumer action) {
+        final int n = size();
+        int[] values = toArray();
+        for (int i = 0; i < n; i++)
+            action.accept(values[i]);
     }
 
     int sum();
@@ -155,8 +118,6 @@ public interface IntSequence {
     default double average() {
         return sum() * 1d / size();
     }
-
-    // sorts
 
     default IntSequence sort() {
         int[] a = toArray();
@@ -182,7 +143,9 @@ public interface IntSequence {
         return createWithoutCopy(a);
     }
 
-    // mergers
+    default IntSequence distinct() {
+        return createWithoutCopy(IntStream.of(toArray()).distinct());
+    }
 
     default IntSequence concat(IntSequence first, IntSequence... rest) {
         final int selfLength = size();
@@ -203,21 +166,10 @@ public interface IntSequence {
         return createWithoutCopy(a);
     }
 
-    // converters
+    int[] toArray();
 
     default IntStream stream() {
         return IntStream.of(toArray());
-    }
-
-    int[] toArray();
-
-    // terminators
-
-    default void forEach(IntConsumer action) {
-        final int n = size();
-        int[] values = toArray();
-        for (int i = 0; i < n; i++)
-            action.accept(values[i]);
     }
 
 }

@@ -5,12 +5,9 @@ import java.util.*;
 import java.util.function.*;
 import java.util.stream.*;
 
-/**
- * DoubleSequence is the variation of Sequence.
- */
 public interface DoubleSequence {
 
-    static DoubleSequence of(double... a) {
+@SafeVarargs    static DoubleSequence of(double... a) {
         return createWithCopy(a);
     }
 
@@ -22,7 +19,7 @@ public interface DoubleSequence {
         return createWithoutCopy(stream.toArray());
     }
 
-    static DoubleSequence seq(double... a) {
+@SafeVarargs    static DoubleSequence seq(double... a) {
         return createWithCopy(a);
     }
 
@@ -38,11 +35,9 @@ public interface DoubleSequence {
         return DoubleSequenceFactory.EMPTY;
     }
 
-    // accessors
-
     int size();
 
-    // filters
+    double at(int index);
 
     default DoubleSequence filter(DoublePredicate predicate) {
         final int n = size();
@@ -56,14 +51,6 @@ public interface DoubleSequence {
         return createWithoutCopy(Arrays.copyOf(a, p));
     }
 
-    double at(int index);
-
-    default DoubleSequence subSequence(int from, int to) {
-        final int n = size() - 1;
-        final int to0 = (to < n) ? to : n;
-        return createWithoutCopy(Arrays.copyOfRange(toArray(), from, to0 + 1));
-    }
-
     default OptionalDouble head() {
         return (size() == 0) ? OptionalDouble.empty() : OptionalDouble.of(at(0));
     }
@@ -72,11 +59,15 @@ public interface DoubleSequence {
         return subSequence(1, Integer.MAX_VALUE);
     }
 
+    default DoubleSequence subSequence(int from, int to) {
+        final int n = size() - 1;
+        final int to0 = (to < n) ? to : n;
+        return createWithoutCopy(Arrays.copyOfRange(toArray(), from, to0 + 1));
+    }
+
     OptionalDouble max();
 
     OptionalDouble min();
-
-    // maps
 
     default DoubleSequence map(DoubleUnaryOperator mapper) {
         final int n = size();
@@ -95,7 +86,13 @@ public interface DoubleSequence {
         return Sequence.of(a);
     }
 
-    // folds
+    default double reduce(double identity, DoubleBinaryOperator op) {
+        // TODO check
+        double result = identity;
+        for (double element : toArray())
+            result = op.applyAsDouble(result, element);
+        return result;
+    }
 
     default double fold(double value, DoubleBinaryOperator f) {
         switch (size()) {
@@ -108,18 +105,11 @@ public interface DoubleSequence {
         }
     }
 
-    // reduces
-
-    default double reduce(double identity, DoubleBinaryOperator op) {
-        // TODO check
-        double result = identity;
-        for (double element : toArray())
-            result = op.applyAsDouble(result, element);
-        return result;
-    }
-
-    default DoubleSequence distinct() {
-        return createWithoutCopy(stream().distinct());
+    default void forEach(DoubleConsumer action) {
+        final int n = size();
+        double[] values = toArray();
+        for (int i = 0; i < n; i++)
+            action.accept(values[i]);
     }
 
     double sum();
@@ -127,8 +117,6 @@ public interface DoubleSequence {
     default double average() {
         return sum() / size();
     }
-
-    // sorts
 
     default DoubleSequence sort() {
         double[] a = toArray();
@@ -154,7 +142,9 @@ public interface DoubleSequence {
         return createWithoutCopy(a);
     }
 
-    // mergers
+    default DoubleSequence distinct() {
+        return createWithoutCopy(stream().distinct());
+    }
 
     default DoubleSequence concat(DoubleSequence first, DoubleSequence... rest) {
         final int selfLength = size();
@@ -175,19 +165,8 @@ public interface DoubleSequence {
         return createWithoutCopy(a);
     }
 
-    // converters
-
-    DoubleStream stream();
-
     double[] toArray();
 
-    // terminators
-
-    default void forEach(DoubleConsumer action) {
-        final int n = size();
-        double[] values = toArray();
-        for (int i = 0; i < n; i++)
-            action.accept(values[i]);
-    }
+    DoubleStream stream();
 
 }
