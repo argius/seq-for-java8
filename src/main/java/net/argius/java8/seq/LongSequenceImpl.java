@@ -28,12 +28,13 @@ final class LongSequenceImpl implements LongSequence {
 
     @Override
     public OptionalLong max() {
-        if (size == 0)
+        final int n = size;
+        if (n == 0)
             return OptionalLong.empty();
-        if (size == 1)
+        if (n == 1)
             return OptionalLong.of(values[0]);
         long max = values[0];
-        for (int i = 1, n = values.length; i < n; i++)
+        for (int i = 1; i < n; i++)
             if (values[i] > max)
                 max = values[i];
         return OptionalLong.of(max);
@@ -41,12 +42,13 @@ final class LongSequenceImpl implements LongSequence {
 
     @Override
     public OptionalLong min() {
-        if (size == 0)
+        final int n = size;
+        if (n == 0)
             return OptionalLong.empty();
-        if (size == 1)
+        if (n == 1)
             return OptionalLong.of(values[0]);
         long min = values[0];
-        for (int i = 1, n = values.length; i < n; i++)
+        for (int i = 1; i < n; i++)
             if (values[i] < min)
                 min = values[i];
         return OptionalLong.of(min);
@@ -54,12 +56,13 @@ final class LongSequenceImpl implements LongSequence {
 
     @Override
     public long sum() {
-        if (size == 0)
+        final int n = size;
+        if (n == 0)
             return 0;
-        if (size == 1)
+        if (n == 1)
             return values[0];
         long sum = values[0];
-        for (int i = 1, n = values.length; i < n; i++)
+        for (int i = 1; i < n; i++)
             sum += values[i];
         return sum;
     }

@@ -25,12 +25,13 @@ final class DoubleSequenceImpl implements DoubleSequence {
 
     @Override
     public OptionalDouble max() {
-        if (size == 0)
+        final int n = size;
+        if (n == 0)
             return OptionalDouble.empty();
-        if (size == 1)
+        if (n == 1)
             return OptionalDouble.of(values[0]);
         double max = values[0];
-        for (int i = 1, n = values.length; i < n; i++)
+        for (int i = 1; i < n; i++)
             if (values[i] > max)
                 max = values[i];
         return OptionalDouble.of(max);
@@ -38,12 +39,13 @@ final class DoubleSequenceImpl implements DoubleSequence {
 
     @Override
     public OptionalDouble min() {
-        if (size == 0)
+        final int n = size;
+        if (n == 0)
             return OptionalDouble.empty();
-        if (size == 1)
+        if (n == 1)
             return OptionalDouble.of(values[0]);
         double min = values[0];
-        for (int i = 1, n = values.length; i < n; i++)
+        for (int i = 1; i < n; i++)
             if (values[i] < min)
                 min = values[i];
         return OptionalDouble.of(min);
@@ -51,12 +53,13 @@ final class DoubleSequenceImpl implements DoubleSequence {
 
     @Override
     public double sum() {
-        if (size == 0)
+        final int n = size;
+        if (n == 0)
             return 0;
-        if (size == 1)
+        if (n == 1)
             return values[0];
         double sum = values[0];
-        for (int i = 1, n = values.length; i < n; i++)
+        for (int i = 1; i < n; i++)
             sum += values[i];
         return sum;
     }

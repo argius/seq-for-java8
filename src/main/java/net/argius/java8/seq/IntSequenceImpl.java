@@ -25,12 +25,13 @@ final class IntSequenceImpl implements IntSequence {
 
     @Override
     public OptionalInt max() {
-        if (size == 0)
+        final int n = size;
+        if (n == 0)
             return OptionalInt.empty();
-        if (size == 1)
+        if (n == 1)
             return OptionalInt.of(values[0]);
         int max = values[0];
-        for (int i = 1, n = values.length; i < n; i++)
+        for (int i = 1; i < n; i++)
             if (values[i] > max)
                 max = values[i];
         return OptionalInt.of(max);
@@ -38,12 +39,13 @@ final class IntSequenceImpl implements IntSequence {
 
     @Override
     public OptionalInt min() {
-        if (size == 0)
+        final int n = size;
+        if (n == 0)
             return OptionalInt.empty();
-        if (size == 1)
+        if (n == 1)
             return OptionalInt.of(values[0]);
         int min = values[0];
-        for (int i = 1, n = values.length; i < n; i++)
+        for (int i = 1; i < n; i++)
             if (values[i] < min)
                 min = values[i];
         return OptionalInt.of(min);
@@ -51,12 +53,13 @@ final class IntSequenceImpl implements IntSequence {
 
     @Override
     public int sum() {
-        if (size == 0)
+        final int n = size;
+        if (n == 0)
             return 0;
-        if (size == 1)
+        if (n == 1)
             return values[0];
         int sum = values[0];
-        for (int i = 1, n = values.length; i < n; i++)
+        for (int i = 1; i < n; i++)
             sum += values[i];
         return sum;
     }
