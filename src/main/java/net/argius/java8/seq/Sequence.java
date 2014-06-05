@@ -7,7 +7,7 @@ import java.util.stream.*;
 
 public interface Sequence<E> extends Iterable<E> {
 
-@SafeVarargs    
+    @SafeVarargs
     static <E> Sequence<E> of(E... a) {
         return createWithCopy(a);
     }
@@ -20,7 +20,7 @@ public interface Sequence<E> extends Iterable<E> {
         return createWithoutCopy(stream.collect(Collectors.toList()));
     }
 
-@SafeVarargs    
+    @SafeVarargs
     static <E> Sequence<E> seq(E... a) {
         return createWithCopy(a);
     }

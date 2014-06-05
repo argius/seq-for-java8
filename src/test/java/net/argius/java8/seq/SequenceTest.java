@@ -129,7 +129,7 @@ public final class SequenceTest {
     @Test
     public void testMapToDouble() {
         assertEquals(DoubleSequence.of(100.1, 2.3, 33.5),
-                seq0(arr("100.1", "2.3", "33.5")).mapToDouble(Double::parseDouble));
+            seq0(arr("100.1", "2.3", "33.5")).mapToDouble(Double::parseDouble));
     }
 
     @Test
@@ -213,25 +213,25 @@ public final class SequenceTest {
     @Test
     public void testSubSequence() {
         assertEquals(seq("scala", "perl", "ruby"),
-                seq0(arr("java", "scala", "perl", "ruby", "python")).subSequence(1, 3));
-//        try {
-//            seq("scala", "perl", "ruby").subSequence(2, 1);
-//            fail();
-//        } catch (IllegalArgumentException e) {
-//            assertEquals("from 2 greater than to 1", e.getMessage());
-//        }
-//        try {
-//            seq("scala", "perl", "ruby").subSequence(-1, 1);
-//            fail();
-//        } catch (Exception e) {
-//            assertEquals("from -1 is negative", e.getMessage());
-//        }
-//        try {
-//            seq("scala", "perl", "ruby").subSequence(1, -1);
-//            fail();
-//        } catch (Exception e) {
-//            assertEquals("to -1 is negative", e.getMessage());
-//        }
+            seq0(arr("java", "scala", "perl", "ruby", "python")).subSequence(1, 3));
+        // try {
+        // seq("scala", "perl", "ruby").subSequence(2, 1);
+        // fail();
+        // } catch (IllegalArgumentException e) {
+        // assertEquals("from 2 greater than to 1", e.getMessage());
+        // }
+        // try {
+        // seq("scala", "perl", "ruby").subSequence(-1, 1);
+        // fail();
+        // } catch (Exception e) {
+        // assertEquals("from -1 is negative", e.getMessage());
+        // }
+        // try {
+        // seq("scala", "perl", "ruby").subSequence(1, -1);
+        // fail();
+        // } catch (Exception e) {
+        // assertEquals("to -1 is negative", e.getMessage());
+        // }
     }
 
     @Test
@@ -254,14 +254,14 @@ public final class SequenceTest {
     @Test
     public void testToMapWithKey() {
         assertEquals("{python=6, java=4, scala=5, perl=4, ruby=4}", //
-                seq("java", "scala", "perl", "ruby", "python").toMapWithKey(String::length).toString());
+            seq("java", "scala", "perl", "ruby", "python").toMapWithKey(String::length).toString());
         assertEquals("{1=1, 2=2, 3=3}", seq0("1", "2", "3").toMapWithKey(String::toUpperCase).toString());
     }
 
     @Test
     public void testToMapWithValue() {
         assertEquals("{JAVA=java, SCALA=scala, PERL=perl, RUBY=ruby, PYTHON=python}",
-                seq("java", "scala", "perl", "ruby", "python").toMapWithValue(String::toUpperCase).toString());
+            seq("java", "scala", "perl", "ruby", "python").toMapWithValue(String::toUpperCase).toString());
         assertEquals("{1=1, 2=2, 3=3}", seq0("1", "2", "3").toMapWithValue(String::toUpperCase).toString());
     }
 

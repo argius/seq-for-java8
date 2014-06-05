@@ -7,7 +7,8 @@ import java.util.stream.*;
 
 public interface DoubleSequence {
 
-@SafeVarargs    static DoubleSequence of(double... a) {
+    @SafeVarargs
+    static DoubleSequence of(double... a) {
         return createWithCopy(a);
     }
 
@@ -19,7 +20,8 @@ public interface DoubleSequence {
         return createWithoutCopy(stream.toArray());
     }
 
-@SafeVarargs    static DoubleSequence seq(double... a) {
+    @SafeVarargs
+    static DoubleSequence seq(double... a) {
         return createWithCopy(a);
     }
 
