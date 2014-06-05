@@ -44,12 +44,6 @@ final class SequenceImpl<E> implements Sequence<E> {
         return new SequenceImpl<>(a);
     }
 
-    // @Override
-    // public IntSequence mapToInt(ToIntFunction<? super E> mapper) {
-    // // TODO Auto-generated method stub
-    // return null;
-    // }
-
     @Override
     public int size() {
         return size;

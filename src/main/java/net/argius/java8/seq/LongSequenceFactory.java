@@ -16,11 +16,6 @@ final class LongSequenceFactory {
         return new LongSequenceImpl(Arrays.copyOf(a, a.length));
     }
 
-    // static <E> LongSequence createWithCopy(Collection<E> collection) {
-    // Collection<E> copy = new ArrayList<>(collection);
-    // return new LongSequenceImpl(copy);
-    // }
-
     @SafeVarargs
     static LongSequence createWithoutCopy(long... a) {
         return new LongSequenceImpl(a);

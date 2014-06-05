@@ -119,26 +119,6 @@ public interface Sequence<E> extends Iterable<E> {
         }
     }
 
-    // List<E> a = new ArrayList<>();
-    // forEach(x -> {
-    // if (predicate.test(x))
-    // a.add(x);
-    // });
-    // return SequenceFactory.createWithoutCopy(a);
-    // List<E> list = toList();
-    // final int n = list.size();
-    // E[] a = generator.apply(n);
-    // for (int i = 0; i < n; i++) {
-    // a[i] = list.get(i);
-    // }
-    // final int n = size();
-    // @SuppressWarnings("unchecked")
-    // E[] a = (E[]) new Object[n];
-    // for (int i = 0; i < n; i++) {
-    // a[i] = list.get(i);
-    // return SequenceFactory.createWithoutCopy(a);
-    // }
-
     default Sequence<E> sort() {
         E[] values = toArray();
         Arrays.sort(values);

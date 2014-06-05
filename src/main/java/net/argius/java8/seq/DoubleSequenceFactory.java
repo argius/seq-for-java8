@@ -16,11 +16,6 @@ final class DoubleSequenceFactory {
         return new DoubleSequenceImpl(Arrays.copyOf(a, a.length));
     }
 
-    // static <E> DoubleSequence createWithCopy(Collection<E> collection) {
-    // Collection<E> copy = new ArrayList<>(collection);
-    // return new DoubleSequenceImpl(copy);
-    // }
-
     @SafeVarargs
     static DoubleSequence createWithoutCopy(double... a) {
         return new DoubleSequenceImpl(a);

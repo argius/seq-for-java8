@@ -16,11 +16,6 @@ final class IntSequenceFactory {
         return new IntSequenceImpl(Arrays.copyOf(a, a.length));
     }
 
-    // static <E> IntSequence createWithCopy(Collection<E> collection) {
-    // Collection<E> copy = new ArrayList<>(collection);
-    // return new IntSequenceImpl(copy);
-    // }
-
     @SafeVarargs
     static IntSequence createWithoutCopy(int... a) {
         return new IntSequenceImpl(a);
