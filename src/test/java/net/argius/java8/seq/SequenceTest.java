@@ -247,6 +247,12 @@ public final class SequenceTest {
     }
 
     @Test
+    public void testTake() {
+        assertEquals(seq("java", "scala", "perl"), seq("java", "scala", "perl", "ruby").take(3));
+        assertEquals(seq(), seq("scala").take(0));
+    }
+
+    @Test
     public void testToArrayIntFunctionOfE() {
         assertArrayEquals(arr("11", "22"), seq0("11", "22").toArray(String[]::new));
     }

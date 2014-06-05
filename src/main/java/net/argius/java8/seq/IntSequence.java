@@ -78,6 +78,10 @@ public interface IntSequence {
         return subSequence(1, Integer.MAX_VALUE);
     }
 
+    default IntSequence take(int size) {
+        return (size == 0) ? empty() : subSequence(0, size - 1);
+    }
+
     default IntSequence subSequence(int from, int to) {
         final int n = size() - 1;
         final int to0 = (to < n) ? to : n;

@@ -197,6 +197,12 @@ public class DoubleSequenceTest {
     }
 
     @Test
+    public void testTake() {
+        assertEquals(seq(134.2d, -53, 343), seq(134.2d, -53, 343, 8, 3, -1).take(3));
+        assertEquals(seq(), seq(0.4d, 23.1, 31.3).take(0));
+    }
+
+    @Test
     public void testToArray() {
         // fail("Not yet implemented");
     }

@@ -293,6 +293,12 @@ public class IntSequenceTest {
     }
 
     @Test
+    public void testTake() {
+        assertEquals(seq(23, 34, 1), seq(23, 34, 1, 5, 19).take(3));
+        assertEquals(seq(), seq(23, 34, 1, 5, 19).take(0));
+    }
+
+    @Test
     public void testToArray() {
         // fail("Not yet implemented");
     }
