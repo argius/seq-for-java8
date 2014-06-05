@@ -78,6 +78,15 @@ public interface DoubleSequence {
         return subSequence(1, Integer.MAX_VALUE);
     }
 
+    default DoubleSequence take(int count) {
+        return (count == 0) ? empty() : subSequence(0, count - 1);
+    }
+
+    default DoubleSequence drop(int count) {
+        final int n = size();
+        return (count >= n) ? empty() : subSequence(count, n);
+    }
+
     default DoubleSequence subSequence(int from, int to) {
         final int n = size() - 1;
         final int to0 = (to < n) ? to : n;

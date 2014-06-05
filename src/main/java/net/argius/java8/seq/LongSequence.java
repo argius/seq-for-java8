@@ -79,6 +79,15 @@ public interface LongSequence {
         return subSequence(1, Integer.MAX_VALUE);
     }
 
+    default LongSequence take(int count) {
+        return (count == 0) ? empty() : subSequence(0, count - 1);
+    }
+
+    default LongSequence drop(int count) {
+        final int n = size();
+        return (count >= n) ? empty() : subSequence(count, n);
+    }
+
     default LongSequence subSequence(int from, int to) {
         final int n = size() - 1;
         final int to0 = (to < n) ? to : n;

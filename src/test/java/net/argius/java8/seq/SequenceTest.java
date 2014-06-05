@@ -101,6 +101,13 @@ public final class SequenceTest {
     }
 
     @Test
+    public void testDrop() {
+        assertEquals(seq("perl", "ruby", "python"), seq("java", "scala", "perl", "ruby", "python").drop(2));
+        assertEquals(seq(), seq("java", "scala", "perl", "ruby", "python").drop(8));
+        assertEquals(seq(), seq().drop(1));
+    }
+
+    @Test
     public void testFilter() {
         Sequence<String> seq = seq("java", "scala", "perl", "ruby", "python");
         assertEquals(seq("java", "perl", "ruby"), seq.filter(x -> x.length() == 4));
@@ -226,6 +233,12 @@ public final class SequenceTest {
         assertEquals(seq("scala", "perl", "ruby"), seq("java", "scala", "perl", "ruby").tail());
         assertEquals(seq("perl", "ruby"), seq("java", "scala", "perl", "ruby").tail().tail());
         assertEquals(seq(), seq("scala").tail().tail());
+    }
+
+    @Test
+    public void testTake() {
+        assertEquals(seq("java", "scala", "perl"), seq("java", "scala", "perl", "ruby").take(3));
+        assertEquals(seq(), seq("scala").take(0));
     }
 
     @Test

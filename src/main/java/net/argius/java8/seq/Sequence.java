@@ -62,6 +62,15 @@ public interface Sequence<E> extends Iterable<E> {
         return (size() > 1) ? subSequence(1, Integer.MAX_VALUE) : empty();
     }
 
+    default Sequence<E> take(int count) {
+        return (count == 0) ? empty() : subSequence(0, count - 1);
+    }
+
+    default Sequence<E> drop(int count) {
+        final int n = size();
+        return (count >= n) ? empty() : subSequence(count, n);
+    }
+
     default Sequence<E> subSequence(int from, int to) {
         final int n = size() - 1;
         final int to0 = (to < n) ? to : n;

@@ -78,6 +78,14 @@ public class IntSequenceTest {
     }
 
     @Test
+    public void testDrop() {
+        assertEquals(seq(12, 3, 8, 18), seq(8, 3, 2, 12, 3, 8, 18).drop(3));
+        assertEquals(seq(), seq(8, 3, 2, 12, 3, 8, 18).drop(12));
+        assertEquals(seq(5, 3, 8, 18), seq(5, 3, 8, 18).drop(0));
+        assertEquals(seq(), seq(8, 3, 2, 12, 3, 8, 18).drop(8));
+    }
+
+    @Test
     public void testEmpty() {
         IntSequence empty1 = IntSequence.empty();
         IntSequence empty2 = IntSequence.empty();
@@ -290,6 +298,12 @@ public class IntSequenceTest {
     @Test
     public void testTail() {
         assertArrayEquals(seq(34, 1, 5, 19).toArray(), seq(23, 34, 1, 5, 19).tail().toArray());
+    }
+
+    @Test
+    public void testTake() {
+        assertEquals(seq(23, 34, 1), seq(23, 34, 1, 5, 19).take(3));
+        assertEquals(seq(), seq(23, 34, 1, 5, 19).take(0));
     }
 
     @Test

@@ -73,6 +73,14 @@ public class LongSequenceTest {
     }
 
     @Test
+    public void testDrop() {
+        assertEquals(seq(15L, -9L, 23L), seq(20L, 3L, 42L, 47L, 15L, -9L, 23L).drop(4));
+        assertEquals(seq(7L, 15L, -9L, 23L), seq(7L, 15L, -9L, 23L).drop(0));
+        assertEquals(seq(), seq(7L, 15L, -9L, 23L).drop(8));
+        assertEquals(seq(), seq().drop(1));
+    }
+
+    @Test
     public void testEmpty() {
         assertEquals(seq(), LongSequence.empty());
     }
@@ -208,6 +216,12 @@ public class LongSequenceTest {
     @Test
     public void testTail() {
         assertEquals(seq(34, 1, 5, 19), seq(23, 34, 1, 5, 19).tail());
+    }
+
+    @Test
+    public void testTake() {
+        assertEquals(seq(23L, 34, 1), seq(23L, 34, 1, 5, 19).take(3));
+        assertEquals(seq(), seq(23L, 34, 1, 5, 19).take(0));
     }
 
     @Test
