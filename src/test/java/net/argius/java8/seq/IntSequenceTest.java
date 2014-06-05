@@ -78,6 +78,14 @@ public class IntSequenceTest {
     }
 
     @Test
+    public void testDrop() {
+        assertEquals(seq(12, 3, 8, 18), seq(8, 3, 2, 12, 3, 8, 18).drop(3));
+        assertEquals(seq(), seq(8, 3, 2, 12, 3, 8, 18).drop(12));
+        assertEquals(seq(5, 3, 8, 18), seq(5, 3, 8, 18).drop(0));
+        assertEquals(seq(), seq(8, 3, 2, 12, 3, 8, 18).drop(8));
+    }
+
+    @Test
     public void testEmpty() {
         IntSequence empty1 = IntSequence.empty();
         IntSequence empty2 = IntSequence.empty();

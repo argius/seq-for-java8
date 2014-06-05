@@ -73,6 +73,14 @@ public class LongSequenceTest {
     }
 
     @Test
+    public void testDrop() {
+        assertEquals(seq(15L, -9L, 23L), seq(20L, 3L, 42L, 47L, 15L, -9L, 23L).drop(4));
+        assertEquals(seq(7L, 15L, -9L, 23L), seq(7L, 15L, -9L, 23L).drop(0));
+        assertEquals(seq(), seq(7L, 15L, -9L, 23L).drop(8));
+        assertEquals(seq(), seq().drop(1));
+    }
+
+    @Test
     public void testEmpty() {
         assertEquals(seq(), LongSequence.empty());
     }

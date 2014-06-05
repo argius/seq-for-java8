@@ -101,6 +101,13 @@ public final class SequenceTest {
     }
 
     @Test
+    public void testDrop() {
+        assertEquals(seq("perl", "ruby", "python"), seq("java", "scala", "perl", "ruby", "python").drop(2));
+        assertEquals(seq(), seq("java", "scala", "perl", "ruby", "python").drop(8));
+        assertEquals(seq(), seq().drop(1));
+    }
+
+    @Test
     public void testFilter() {
         Sequence<String> seq = seq("java", "scala", "perl", "ruby", "python");
         assertEquals(seq("java", "perl", "ruby"), seq.filter(x -> x.length() == 4));

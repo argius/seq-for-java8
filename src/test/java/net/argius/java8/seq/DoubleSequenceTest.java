@@ -34,6 +34,14 @@ public class DoubleSequenceTest {
     }
 
     @Test
+    public void testDrop() {
+        assertEquals(seq(-1.34d, 1.92d, 29.95d), seq(14.59d, 24.80d, 34.88d, -1.34d, 1.92d, 29.95d).drop(3));
+        assertEquals(seq(), seq(14.59d, 24.80d, 34.88d, -1.34d, 1.92d, 29.95d).drop(8));
+        assertEquals(seq(), seq(32.52d, 30.51d, -5.33d, 7.60d, 46.04d, 25.82d).drop(16));
+        assertEquals(seq(), seq().drop(3));
+    }
+
+    @Test
     public void testEmpty() {
         assertEquals(seq(), DoubleSequence.empty());
     }
