@@ -148,7 +148,7 @@ final class IntSequenceImpl implements IntSequence {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        IntSequenceImpl other = (IntSequenceImpl) obj;
+        IntSequenceImpl other = (IntSequenceImpl)obj;
         if (size != other.size)
             return false;
         if (!Arrays.equals(values, other.values))

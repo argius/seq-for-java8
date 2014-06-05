@@ -11,7 +11,7 @@ public class DoubleSequenceImplTest {
     private static final double DELTA = 0.00001d;
 
     static DoubleSequenceImpl seq0(double... a) {
-        return (DoubleSequenceImpl) DoubleSequenceFactory.createWithCopy(a);
+        return (DoubleSequenceImpl)DoubleSequenceFactory.createWithCopy(a);
     }
 
     @Test

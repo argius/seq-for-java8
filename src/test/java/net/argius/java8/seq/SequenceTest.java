@@ -29,7 +29,7 @@ public final class SequenceTest {
                 return false;
             if (getClass() != obj.getClass())
                 return false;
-            SequenceImpl0<?> other = (SequenceImpl0<?>) obj;
+            SequenceImpl0<?> other = (SequenceImpl0<?>)obj;
             if (size != other.size)
                 return false;
             if (!Arrays.equals(values, other.values))
@@ -226,6 +226,7 @@ public final class SequenceTest {
     public void testSubSequence() {
         assertEquals(seq("scala", "perl", "ruby"),
             seq0(arr("java", "scala", "perl", "ruby", "python")).subSequence(1, 3));
+<<<<<<< HEAD
         // try {
         // seq("scala", "perl", "ruby").subSequence(2, 1);
         // fail();
@@ -244,6 +245,8 @@ public final class SequenceTest {
         // } catch (Exception e) {
         // assertEquals("to -1 is negative", e.getMessage());
         // }
+=======
+>>>>>>> dev
     }
 
     @Test

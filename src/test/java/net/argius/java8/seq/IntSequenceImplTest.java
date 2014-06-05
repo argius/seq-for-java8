@@ -10,7 +10,7 @@ import org.junit.*;
 public class IntSequenceImplTest {
 
     static IntSequenceImpl seq0(int... a) {
-        return (IntSequenceImpl) IntSequenceFactory.createWithCopy(a);
+        return (IntSequenceImpl)IntSequenceFactory.createWithCopy(a);
     }
 
     @Test
