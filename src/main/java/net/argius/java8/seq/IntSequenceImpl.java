@@ -65,6 +65,19 @@ final class IntSequenceImpl implements IntSequence {
     }
 
     @Override
+    public int product() {
+        final int n = size;
+        if (n == 0)
+            return 0;
+        if (n == 1)
+            return values[0];
+        int product = values[0];
+        for (int i = 1; i < n; i++)
+            product *= values[i];
+        return product;
+    }
+
+    @Override
     public IntSequence sortWith(int fromIndex, int toIndex, IntComparator cmp) {
         int[] a = Arrays.copyOf(values, size);
         sortWith0(a, fromIndex, toIndex, cmp);

@@ -47,6 +47,11 @@ public class IntSequenceTest {
                 throw new UnsupportedOperationException();
             }
 
+            @Override
+            public int product() {
+                throw new UnsupportedOperationException();
+            }
+
         };
     }
 

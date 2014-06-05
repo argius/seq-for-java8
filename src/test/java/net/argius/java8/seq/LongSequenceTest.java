@@ -48,6 +48,11 @@ public class LongSequenceTest {
                 throw new UnsupportedOperationException();
             }
 
+            @Override
+            public long product() {
+                throw new UnsupportedOperationException();
+            }
+
         };
     }
 

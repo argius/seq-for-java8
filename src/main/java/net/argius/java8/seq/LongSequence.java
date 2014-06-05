@@ -114,6 +114,8 @@ public interface LongSequence {
 
     long sum();
 
+    long product();
+
     default double average() {
         return sum() * 1d / size();
     }

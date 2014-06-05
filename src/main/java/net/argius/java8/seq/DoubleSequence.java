@@ -114,6 +114,8 @@ public interface DoubleSequence {
 
     double sum();
 
+    double product();
+
     default double average() {
         return sum() / size();
     }

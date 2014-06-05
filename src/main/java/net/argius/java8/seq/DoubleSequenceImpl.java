@@ -65,6 +65,19 @@ final class DoubleSequenceImpl implements DoubleSequence {
     }
 
     @Override
+    public double product() {
+        final int n = size;
+        if (n == 0)
+            return 0;
+        if (n == 1)
+            return values[0];
+        double product = values[0];
+        for (int i = 1; i < n; i++)
+            product *= values[i];
+        return product;
+    }
+
+    @Override
     public DoubleSequence sortWith(int fromIndex, int toIndex, DoubleComparator cmp) {
         double[] a = Arrays.copyOf(values, size);
         sortWith0(a, fromIndex, toIndex, cmp);

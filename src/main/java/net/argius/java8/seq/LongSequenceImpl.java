@@ -68,6 +68,19 @@ final class LongSequenceImpl implements LongSequence {
     }
 
     @Override
+    public long product() {
+        final int n = size;
+        if (n == 0)
+            return 0;
+        if (n == 1)
+            return values[0];
+        long product = values[0];
+        for (int i = 1; i < n; i++)
+            product *= values[i];
+        return product;
+    }
+
+    @Override
     public LongSequence sortWith(int fromIndex, int toIndex, LongComparator cmp) {
         long[] a = Arrays.copyOf(values, size);
         sortWith0(a, fromIndex, toIndex, cmp);

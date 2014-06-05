@@ -115,6 +115,8 @@ public interface IntSequence {
 
     int sum();
 
+    int product();
+
     default double average() {
         return sum() * 1d / size();
     }
