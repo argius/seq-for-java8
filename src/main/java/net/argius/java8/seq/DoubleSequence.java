@@ -88,11 +88,26 @@ public interface DoubleSequence {
         return Sequence.of(a);
     }
 
+    default OptionalDouble reduce(DoubleBinaryOperator op) {
+        final int n = size();
+        if (n == 0)
+            return OptionalDouble.empty();
+        double[] a = toArray();
+        double result = a[0];
+        for (int i = 1; i < n; i++) {
+            result = op.applyAsDouble(result, a[i]);
+        }
+        return OptionalDouble.of(result);
+    }
+
     default double reduce(double identity, DoubleBinaryOperator op) {
-        // TODO check
+        final int n = size();
+        if (n == 0)
+            return identity;
+        double[] a = toArray();
         double result = identity;
-        for (double element : toArray())
-            result = op.applyAsDouble(result, element);
+        for (int i = 0; i < n; i++)
+            result = op.applyAsDouble(result, a[i]);
         return result;
     }
 

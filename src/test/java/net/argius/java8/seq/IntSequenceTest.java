@@ -168,8 +168,10 @@ public class IntSequenceTest {
 
     @Test
     public void testReduce() {
-        IntSequence expected = seq(-1, 3, 8, 343, -53, 134);
-        assertEquals(437, expected.reduce(3, (x, y) -> x + y));
+        assertEquals(434, seq(-1, 3, 8, 343, -53, 134).reduce((x, y) -> x + y).getAsInt());
+        assertEquals(437, seq(-1, 3, 8, 343, -53, 134).reduce(3, (x, y) -> x + y));
+        assertEquals(OptionalInt.empty(), seq(0).tail().reduce((x, y) -> x + y));
+        assertEquals(3, seq().reduce(3, (x, y) -> x + y));
     }
 
     @Test

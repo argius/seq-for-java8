@@ -159,7 +159,12 @@ public final class SequenceTest {
 
     @Test
     public void testReduce() {
+        assertEquals("ACE", seq("A", "C", "E").reduce((x, y) -> x + y).get());
         assertEquals("FACE", seq("A", "C", "E").reduce("F", (x, y) -> x + y));
+        assertEquals("c(b(a))", seq("a", "b", "c").reduce((x, y) -> String.format("%s(%s)", y, x)).get());
+        assertEquals("c(b(a(x)))", seq("a", "b", "c").reduce("x", (x, y) -> String.format("%s(%s)", y, x)));
+        assertEquals(Optional.<String>empty(), seq("").tail().reduce((x, y) -> x + y));
+        assertEquals("X", seq("").tail().reduce("X", (x, y) -> x + y));
     }
 
     @Test

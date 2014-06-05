@@ -114,7 +114,10 @@ public class DoubleSequenceTest {
 
     @Test
     public void testReduce() {
-        assertEquals(435.6d, seq(134.3d, -53, 343, 8, 3, -1).reduce(1.3, (x, y) -> x + y), DELTA);
+        assertEquals(434.3d, seq(134.3d, -53, 343, 8, 3, -1).reduce((x, y) -> x + y).getAsDouble(), DELTA);
+        assertEquals(435.6d, seq(134.3d, -53, 343, 8, 3, -1).reduce(1.3d, (x, y) -> x + y), DELTA);
+        assertEquals(OptionalDouble.empty(), seq(-1d).tail().reduce((x, y) -> x + y));
+        assertEquals(1.3d, seq().reduce(1.3d, (x, y) -> x + y), DELTA);
     }
 
     @Test

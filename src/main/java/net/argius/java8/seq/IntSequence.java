@@ -89,11 +89,26 @@ public interface IntSequence {
         return Sequence.of(a);
     }
 
+    default OptionalInt reduce(IntBinaryOperator op) {
+        final int n = size();
+        if (n == 0)
+            return OptionalInt.empty();
+        int[] a = toArray();
+        int result = a[0];
+        for (int i = 1; i < n; i++) {
+            result = op.applyAsInt(result, a[i]);
+        }
+        return OptionalInt.of(result);
+    }
+
     default int reduce(int identity, IntBinaryOperator op) {
-        // TODO check
+        final int n = size();
+        if (n == 0)
+            return identity;
+        int[] a = toArray();
         int result = identity;
-        for (int element : toArray())
-            result = op.applyAsInt(result, element);
+        for (int i = 0; i < n; i++)
+            result = op.applyAsInt(result, a[i]);
         return result;
     }
 
