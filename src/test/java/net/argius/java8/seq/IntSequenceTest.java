@@ -1,9 +1,10 @@
 package net.argius.java8.seq;
 
-import static net.argius.java8.seq.IntSequence.seq;
+import static net.argius.java8.seq.IntSequence.*;
 import static net.argius.java8.seq.TestUtils.iarr;
 import static org.junit.Assert.*;
 import java.util.*;
+import java.util.concurrent.atomic.*;
 import java.util.stream.*;
 import org.junit.*;
 
@@ -44,6 +45,11 @@ public class IntSequenceTest {
 
             @Override
             public int at(int index) {
+                throw new UnsupportedOperationException();
+            }
+
+            @Override
+            public int product() {
                 throw new UnsupportedOperationException();
             }
 
@@ -95,6 +101,13 @@ public class IntSequenceTest {
         StringBuilder sb = new StringBuilder();
         seq(3, 2, 8, 5, 6).forEach(x -> sb.append(":").append(x));
         assertEquals(":3:2:8:5:6", sb.toString());
+    }
+
+    @Test
+    public void testGenerate() {
+        assertEquals(seq(4, 4, 4), generate(3, () -> 4));
+        AtomicInteger aint = new AtomicInteger(-3);
+        assertEquals(seq(-3, -2, -1, 0, 1), generate(5, () -> aint.getAndAdd(1)));
     }
 
     @Test
@@ -157,6 +170,18 @@ public class IntSequenceTest {
             assertNotSame(actual1, actual2);
             assertArrayEquals(expected.toArray(), actual1.toArray());
             assertArrayEquals(expected.toArray(), actual2.toArray());
+        }
+    }
+
+    @Test
+    public void testRandom() {
+        for (int i = 0; i < 1000; i++) {
+            final int size = 12;
+            final int min = -2;
+            final int max = 4;
+            IntSequence seq = random(size, min, max);
+            assertEquals(size, seq.size());
+            assertEquals(0, seq.filter(x -> x < min || x > max).size());
         }
     }
 

@@ -37,6 +37,23 @@ public interface IntSequence {
         return IntSequenceFactory.EMPTY;
     }
 
+    static IntSequence generate(int size, IntSupplier generator) {
+        int[] a = new int[size];
+        for (int i = 0; i < size; i++)
+            a[i] = generator.getAsInt();
+        return createWithoutCopy(a);
+    }
+
+    static IntSequence random(int size, int min, int max) {
+        // if you need SecureRandom, use generate(int, IntSupplier)
+        final int distance = max - min + 1;
+        Random r = new Random(System.currentTimeMillis());
+        int[] a = new int[size];
+        for (int i = 0; i < size; i++)
+            a[i] = min + (int)(r.nextDouble() * distance);
+        return createWithoutCopy(a);
+    }
+
     int size();
 
     int at(int index);
@@ -131,6 +148,8 @@ public interface IntSequence {
     }
 
     int sum();
+
+    int product();
 
     default double average() {
         return sum() * 1d / size();

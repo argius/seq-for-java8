@@ -101,6 +101,13 @@ public class DoubleSequenceImplTest {
     }
 
     @Test
+    public void testProduct() {
+        assertEquals(720.0d, seq(2, 3, 4, 5, 6).product(), DELTA);
+        assertEquals(2.0d, seq(2).product(), DELTA);
+        assertEquals(0.0d, seq().product(), DELTA);
+    }
+
+    @Test
     public void testReverse() {
         assertEquals(seq(-1, 3, 8, 343, -53, 134), seq(134, -53, 343, 8, 3, -1).reverse());
         assertEquals(seq(-1, 3), seq(3, -1).reverse());

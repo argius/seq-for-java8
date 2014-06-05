@@ -117,6 +117,13 @@ public class LongSequenceImplTest {
     }
 
     @Test
+    public void testProduct() {
+        assertEquals(720, seq(2, 3, 4, 5, 6).product());
+        assertEquals(2, seq(2).product());
+        assertEquals(0, seq().product());
+    }
+
+    @Test
     public final void testReverse() {
         long[] arg = larr(134, -53, 343, 8, 3, -1);
         LongSequence expected = seq(-1, 3, 8, 343, -53, 134);
