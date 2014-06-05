@@ -131,7 +131,6 @@ public class DoubleSequenceTest {
             final double max = 3.6d;
             DoubleSequence seq = random(size, min, max);
             assertEquals(size, seq.size());
-            System.out.println(seq);
             assertEquals(0, seq.filter(x -> x < min || x > max).size());
         }
     }
