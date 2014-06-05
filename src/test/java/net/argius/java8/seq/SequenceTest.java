@@ -226,27 +226,6 @@ public final class SequenceTest {
     public void testSubSequence() {
         assertEquals(seq("scala", "perl", "ruby"),
             seq0(arr("java", "scala", "perl", "ruby", "python")).subSequence(1, 3));
-<<<<<<< HEAD
-        // try {
-        // seq("scala", "perl", "ruby").subSequence(2, 1);
-        // fail();
-        // } catch (IllegalArgumentException e) {
-        // assertEquals("from 2 greater than to 1", e.getMessage());
-        // }
-        // try {
-        // seq("scala", "perl", "ruby").subSequence(-1, 1);
-        // fail();
-        // } catch (Exception e) {
-        // assertEquals("from -1 is negative", e.getMessage());
-        // }
-        // try {
-        // seq("scala", "perl", "ruby").subSequence(1, -1);
-        // fail();
-        // } catch (Exception e) {
-        // assertEquals("to -1 is negative", e.getMessage());
-        // }
-=======
->>>>>>> dev
     }
 
     @Test
