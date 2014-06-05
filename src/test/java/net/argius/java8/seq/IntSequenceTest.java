@@ -1,9 +1,10 @@
 package net.argius.java8.seq;
 
-import static net.argius.java8.seq.IntSequence.seq;
+import static net.argius.java8.seq.IntSequence.*;
 import static net.argius.java8.seq.TestUtils.iarr;
 import static org.junit.Assert.*;
 import java.util.*;
+import java.util.concurrent.atomic.*;
 import java.util.stream.*;
 import org.junit.*;
 
@@ -103,6 +104,13 @@ public class IntSequenceTest {
     }
 
     @Test
+    public void testGenerate() {
+        assertEquals(seq(4, 4, 4), generate(3, () -> 4));
+        AtomicInteger aint = new AtomicInteger(-3);
+        assertEquals(seq(-3, -2, -1, 0, 1), generate(5, () -> aint.getAndAdd(1)));
+    }
+
+    @Test
     public void testHead() {
         assertEquals(4, seq(4, 23, 33, 1, 5, 19).head().getAsInt());
         assertTrue(seq(4).head().isPresent());
@@ -162,6 +170,18 @@ public class IntSequenceTest {
             assertNotSame(actual1, actual2);
             assertArrayEquals(expected.toArray(), actual1.toArray());
             assertArrayEquals(expected.toArray(), actual2.toArray());
+        }
+    }
+
+    @Test
+    public void testRandom() {
+        for (int i = 0; i < 1000; i++) {
+            final int size = 12;
+            final int min = -2;
+            final int max = 4;
+            IntSequence seq = random(size, min, max);
+            assertEquals(size, seq.size());
+            assertEquals(0, seq.filter(x -> x < min || x > max).size());
         }
     }
 

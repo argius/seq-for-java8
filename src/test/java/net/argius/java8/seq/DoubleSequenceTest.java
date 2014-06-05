@@ -4,6 +4,7 @@ import static net.argius.java8.seq.DoubleSequence.*;
 import static net.argius.java8.seq.TestUtils.darr;
 import static org.junit.Assert.*;
 import java.util.*;
+import java.util.concurrent.atomic.*;
 import java.util.stream.*;
 import org.junit.*;
 
@@ -72,6 +73,16 @@ public class DoubleSequenceTest {
     }
 
     @Test
+    public void testGenerate() {
+        assertEquals(seq(0.81d, 0.81d, 0.81d), generate(3, () -> 0.81d));
+        DoubleAdder dadder = new DoubleAdder();
+        assertEquals(seq(0.57d, 1.14d, 1.71d, 2.28d), generate(4, () -> {
+            dadder.add(0.57d);
+            return dadder.sum();
+        }));
+    }
+
+    @Test
     public void testHashCode() {
         assertEquals(3147808, seq(1.1, 2.2).hashCode());
         assertEquals(-1503132670, seq(1.1).hashCode());
@@ -110,6 +121,19 @@ public class DoubleSequenceTest {
     public void testOfDoubleStream() {
         assertEquals(seq(0.37d, 24.98d, 9.46d, 19.55d, 28.90d, -11.07d, 2.75d),
             of(DoubleStream.of(0.37d, 24.98d, 9.46d, 19.55d, 28.90d, -11.07d, 2.75d)));
+    }
+
+    @Test
+    public void testRandom() {
+        for (int i = 0; i < 1000; i++) {
+            final int size = 14;
+            final double min = -1.2d;
+            final double max = 3.6d;
+            DoubleSequence seq = random(size, min, max);
+            assertEquals(size, seq.size());
+            System.out.println(seq);
+            assertEquals(0, seq.filter(x -> x < min || x > max).size());
+        }
     }
 
     @Test

@@ -4,6 +4,7 @@ import static net.argius.java8.seq.LongSequence.*;
 import static net.argius.java8.seq.TestUtils.larr;
 import static org.junit.Assert.assertEquals;
 import java.util.*;
+import java.util.concurrent.atomic.*;
 import java.util.stream.*;
 import org.apache.commons.lang3.*;
 import org.junit.*;
@@ -97,6 +98,13 @@ public class LongSequenceTest {
     }
 
     @Test
+    public void testGenerate() {
+        assertEquals(seq(7L, 7, 7), generate(3, () -> 7L));
+        AtomicLong along = new AtomicLong(-5L);
+        assertEquals(seq(-5L, -4, -3, -2, -1), generate(5, () -> along.getAndAdd(1)));
+    }
+
+    @Test
     public void testHead() {
         assertEquals(OptionalLong.of(4), seq(4, 23, 33, 1, 5, 19).head());
         assertEquals(OptionalLong.of(23), seq(23, 33, 1, 5, 19).head());
@@ -126,6 +134,18 @@ public class LongSequenceTest {
     @Test
     public void testOfLongStream() {
         assertEquals(seq(48L, -5L, 35L, 43L, -2L, 7L), of(LongStream.of(48L, -5L, 35L, 43L, -2L, 7L)));
+    }
+
+    @Test
+    public void testRandom() {
+        for (int i = 0; i < 1000; i++) {
+            final int size = 13;
+            final long min = -8L;
+            final long max = 12L;
+            LongSequence seq = random(size, min, max);
+            assertEquals(size, seq.size());
+            assertEquals(0, seq.filter(x -> x < min || x > max).size());
+        }
     }
 
     @Test

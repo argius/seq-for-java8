@@ -37,6 +37,23 @@ public interface DoubleSequence {
         return DoubleSequenceFactory.EMPTY;
     }
 
+    static DoubleSequence generate(int size, DoubleSupplier generator) {
+        double[] a = new double[size];
+        for (int i = 0; i < size; i++)
+            a[i] = generator.getAsDouble();
+        return createWithoutCopy(a);
+    }
+
+    static DoubleSequence random(int size, double min, double max) {
+        // if you need SecureRandom, use generate(int, DoubleSupplier)
+        final double distance = max - min + 0.000000000d;
+        Random r = new Random(System.currentTimeMillis());
+        double[] a = new double[size];
+        for (int i = 0; i < size; i++)
+            a[i] = min + (int)(r.nextDouble() * distance);
+        return createWithoutCopy(a);
+    }
+
     int size();
 
     double at(int index);

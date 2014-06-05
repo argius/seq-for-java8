@@ -38,6 +38,23 @@ public interface LongSequence {
         return LongSequenceFactory.EMPTY;
     }
 
+    static LongSequence generate(int size, LongSupplier generator) {
+        long[] a = new long[size];
+        for (int i = 0; i < size; i++)
+            a[i] = generator.getAsLong();
+        return createWithoutCopy(a);
+    }
+
+    static LongSequence random(int size, long min, long max) {
+        // if you need SecureRandom, use generate(int, LongSupplier)
+        final long distance = max - min + 1;
+        Random r = new Random(System.currentTimeMillis());
+        long[] a = new long[size];
+        for (int i = 0; i < size; i++)
+            a[i] = min + (int)(r.nextDouble() * distance);
+        return createWithoutCopy(a);
+    }
+
     int size();
 
     long at(int index);
