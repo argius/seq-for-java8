@@ -130,7 +130,10 @@ public class LongSequenceTest {
 
     @Test
     public void testReduce() {
+        assertEquals(105L, seq(3, 5, 7).reduce((x, y) -> x * y).getAsLong());
         assertEquals(420L, seq(3, 5, 7).reduce(4L, (x, y) -> x * y));
+        assertEquals(OptionalLong.empty(), seq(0L).tail().reduce((x, y) -> x * y));
+        assertEquals(4L, seq().reduce(4L, (x, y) -> x * y));
     }
 
     @Test

@@ -89,10 +89,26 @@ public interface LongSequence {
         return Sequence.of(a);
     }
 
+    default OptionalLong reduce(LongBinaryOperator op) {
+        final int n = size();
+        if (n == 0)
+            return OptionalLong.empty();
+        long[] a = toArray();
+        long result = a[0];
+        for (int i = 1; i < n; i++) {
+            result = op.applyAsLong(result, a[i]);
+        }
+        return OptionalLong.of(result);
+    }
+
     default long reduce(long identity, LongBinaryOperator op) {
+        final int n = size();
+        if (n == 0)
+            return identity;
+        long[] a = toArray();
         long result = identity;
-        for (long element : toArray())
-            result = op.applyAsLong(result, element);
+        for (int i = 0; i < n; i++)
+            result = op.applyAsLong(result, a[i]);
         return result;
     }
 

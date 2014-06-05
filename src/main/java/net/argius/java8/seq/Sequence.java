@@ -101,10 +101,25 @@ public interface Sequence<E> extends Iterable<E> {
         return DoubleSequenceFactory.createWithoutCopy(a);
     }
 
+    default Optional<E> reduce(BinaryOperator<E> op) {
+        final int n = size();
+        if (n == 0)
+            return Optional.empty();
+        E[] a = toArray();
+        E result = a[0];
+        for (int i = 1; i < n; i++)
+            result = op.apply(result, a[i]);
+        return Optional.of(result);
+    }
+
     default E reduce(E identity, BinaryOperator<E> op) {
+        final int n = size();
+        if (n == 0)
+            return identity;
+        E[] a = toArray();
         E result = identity;
-        for (E element : toArray())
-            result = op.apply(result, element);
+        for (int i = 0; i < n; i++)
+            result = op.apply(result, a[i]);
         return result;
     }
 
