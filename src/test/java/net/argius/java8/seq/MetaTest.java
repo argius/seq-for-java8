@@ -7,18 +7,14 @@ import org.junit.*;
 
 public final class MetaTest {
 
-    // TODO add unimplemented methods
     static final String[] methodList1 = { "of", "seq", "empty", "size", "at", "subSequence", "filter", "head", "tail",
             "map", "forEach", "fold", "reduce", "distinct", "reverse", "sort", "sortWith", "concat", "stream",
-            "toArray", "toString", };
-    // all, any,
+            "toArray", };
 
-    static final String[] methodListForNumber = { "max", "min", "sum", };
-
-    @Test
-    public void testSequenceImpl() {
-        checkMethods(SequenceImpl.class, methodList1);
-    }
+    static final String[] methodListForNumber = { "max", "min", "sum", "mapToObj", };
+    static final String[] methodListExceptInt = {}; // "mapToInt", };
+    static final String[] methodListExceptLong = {}; // "mapToLong", };
+    static final String[] methodListExceptDouble = {}; // "mapToDouble", };
 
     static void checkMethods(Class<?> c, String[]... lists) {
         for (String[] list : lists)
@@ -28,21 +24,39 @@ public final class MetaTest {
     }
 
     @Test
+    public void testSequenceImpl() {
+        Class<?> c = Sequence.class;
+        checkMethods(c, methodList1);
+        checkMethods(c, methodListExceptInt);
+        checkMethods(c, methodListExceptLong);
+        checkMethods(c, methodListExceptDouble);
+    }
+
+    @Test
     public void testIntSequenceImpl() {
-        checkMethods(IntSequenceImpl.class, methodList1);
-        checkMethods(IntSequenceImpl.class, methodListForNumber);
+        Class<?> c = IntSequence.class;
+        checkMethods(c, methodList1);
+        checkMethods(c, methodListForNumber);
+        checkMethods(c, methodListExceptLong);
+        checkMethods(c, methodListExceptDouble);
     }
 
     @Test
     public void testLongSequenceImpl() {
-        checkMethods(LongSequenceImpl.class, methodList1);
-        checkMethods(LongSequenceImpl.class, methodListForNumber);
+        Class<?> c = LongSequence.class;
+        checkMethods(c, methodList1);
+        checkMethods(c, methodListForNumber);
+        checkMethods(c, methodListExceptInt);
+        checkMethods(c, methodListExceptDouble);
     }
 
     @Test
     public void testDoubleSequenceImpl() {
-        checkMethods(DoubleSequenceImpl.class, methodList1);
-        checkMethods(DoubleSequenceImpl.class, methodListForNumber);
+        Class<?> c = DoubleSequence.class;
+        checkMethods(c, methodList1);
+        checkMethods(c, methodListForNumber);
+        checkMethods(c, methodListExceptInt);
+        checkMethods(c, methodListExceptLong);
     }
 
     @Test
