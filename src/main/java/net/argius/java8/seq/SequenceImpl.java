@@ -17,7 +17,7 @@ final class SequenceImpl<E> implements Sequence<E> {
     SequenceImpl(Collection<E> a) {
         this.size = a.size();
         @SuppressWarnings("unchecked")
-        final E[] array = (E[]) a.toArray();
+        final E[] array = (E[])a.toArray();
         this.values = array;
     }
 
@@ -38,7 +38,7 @@ final class SequenceImpl<E> implements Sequence<E> {
     @Override
     public <R> Sequence<R> map(Function<? super E, ? extends R> mapper) {
         @SuppressWarnings("unchecked")
-        R[] a = (R[]) new Object[size];
+        R[] a = (R[])new Object[size];
         for (int i = 0, n = size; i < n; i++)
             a[i] = mapper.apply(values[i]);
         return new SequenceImpl<>(a);
@@ -54,7 +54,7 @@ final class SequenceImpl<E> implements Sequence<E> {
     @Override
     public Sequence<E> filter(Predicate<? super E> predicate) {
         @SuppressWarnings("unchecked")
-        E[] a = (E[]) new Object[size];
+        E[] a = (E[])new Object[size];
         int p = 0;
         for (int i = 0, n = size; i < n; i++)
             if (predicate.test(values[i]))
@@ -117,7 +117,7 @@ final class SequenceImpl<E> implements Sequence<E> {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        SequenceImpl<?> other = (SequenceImpl<?>) obj;
+        SequenceImpl<?> other = (SequenceImpl<?>)obj;
         if (size != other.size)
             return false;
         if (!Arrays.equals(values, other.values))

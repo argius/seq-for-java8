@@ -7,7 +7,8 @@ import java.util.stream.*;
 
 public interface IntSequence {
 
-@SafeVarargs    static IntSequence of(int... a) {
+    @SafeVarargs
+    static IntSequence of(int... a) {
         return createWithCopy(a);
     }
 
@@ -19,7 +20,8 @@ public interface IntSequence {
         return createWithoutCopy(stream.toArray());
     }
 
-@SafeVarargs    static IntSequence seq(int... a) {
+    @SafeVarargs
+    static IntSequence seq(int... a) {
         return createWithCopy(a);
     }
 

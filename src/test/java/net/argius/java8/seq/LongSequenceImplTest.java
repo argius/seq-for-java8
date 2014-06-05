@@ -9,7 +9,7 @@ import org.junit.*;
 public class LongSequenceImplTest {
 
     static LongSequenceImpl seq0(long... a) {
-        return (LongSequenceImpl) LongSequenceFactory.createWithCopy(a);
+        return (LongSequenceImpl)LongSequenceFactory.createWithCopy(a);
     }
 
     @Test

@@ -132,7 +132,7 @@ final class DoubleSequenceImpl implements DoubleSequence {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        DoubleSequenceImpl other = (DoubleSequenceImpl) obj;
+        DoubleSequenceImpl other = (DoubleSequenceImpl)obj;
         if (size != other.size)
             return false;
         if (!Arrays.equals(values, other.values))

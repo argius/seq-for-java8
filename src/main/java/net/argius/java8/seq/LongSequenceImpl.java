@@ -130,7 +130,7 @@ final class LongSequenceImpl implements LongSequence {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        LongSequenceImpl other = (LongSequenceImpl) obj;
+        LongSequenceImpl other = (LongSequenceImpl)obj;
         if (size != other.size)
             return false;
         if (!Arrays.equals(values, other.values))

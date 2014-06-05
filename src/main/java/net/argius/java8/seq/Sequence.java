@@ -7,7 +7,7 @@ import java.util.stream.*;
 
 public interface Sequence<E> extends Iterable<E> {
 
-@SafeVarargs    
+    @SafeVarargs
     static <E> Sequence<E> of(E... a) {
         return createWithCopy(a);
     }
@@ -20,7 +20,7 @@ public interface Sequence<E> extends Iterable<E> {
         return createWithoutCopy(stream.collect(Collectors.toList()));
     }
 
-@SafeVarargs    
+    @SafeVarargs
     static <E> Sequence<E> seq(E... a) {
         return createWithCopy(a);
     }
@@ -42,7 +42,7 @@ public interface Sequence<E> extends Iterable<E> {
      */
     static <E> Sequence<E> empty() {
         @SuppressWarnings("unchecked")
-        Sequence<E> seq = (Sequence<E>) SequenceFactory.EMPTY;
+        Sequence<E> seq = (Sequence<E>)SequenceFactory.EMPTY;
         return seq;
     }
 
@@ -71,7 +71,7 @@ public interface Sequence<E> extends Iterable<E> {
     default <R> Sequence<R> map(Function<? super E, ? extends R> mapper) {
         final int n = size();
         @SuppressWarnings("unchecked")
-        R[] a = (R[]) new Object[n];
+        R[] a = (R[])new Object[n];
         for (int i = 0; i < n; i++)
             a[i] = mapper.apply(at(i));
         return createWithoutCopy(a);

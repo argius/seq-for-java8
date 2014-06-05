@@ -10,7 +10,7 @@ public final class SequenceImplTest {
 
     @SafeVarargs
     static <E> SequenceImpl<E> seq0(E... a) {
-        SequenceImpl<E> x = (SequenceImpl<E>) SequenceFactory.createWithCopy(a);
+        SequenceImpl<E> x = (SequenceImpl<E>)SequenceFactory.createWithCopy(a);
         return x;
     }
 

@@ -7,7 +7,8 @@ import java.util.stream.*;
 
 public interface LongSequence {
 
-@SafeVarargs    static LongSequence of(long... a) {
+    @SafeVarargs
+    static LongSequence of(long... a) {
         return createWithCopy(a);
     }
 
@@ -20,7 +21,8 @@ public interface LongSequence {
         return createWithoutCopy(stream.toArray());
     }
 
-@SafeVarargs    static LongSequence seq(long... a) {
+    @SafeVarargs
+    static LongSequence seq(long... a) {
         return createWithCopy(a);
     }
 
