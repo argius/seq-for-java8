@@ -16,7 +16,6 @@ However, Sequences are immutable and stateless.
 Examples
 --------------------
 
-
 ```
 // import net.argius.java8.seq.Sequence;
 Sequence<String> seq = Sequence.of("ant", "bean", "coffee");
@@ -27,7 +26,6 @@ List<String> list = seq.filter(x -> !x.equals("ant")).reverse().toList();
 double average = seq(-100, 13, 25, 8, 1).drop(1).average();
 // => 11.75
 ```
-
 
 
 License
