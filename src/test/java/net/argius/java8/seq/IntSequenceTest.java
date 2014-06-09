@@ -1,7 +1,7 @@
 package net.argius.java8.seq;
 
 import static net.argius.java8.seq.IntSequence.*;
-import static net.argius.java8.seq.TestUtils.iarr;
+import static net.argius.java8.seq.TestUtils.*;
 import static org.junit.Assert.*;
 import java.util.*;
 import java.util.concurrent.atomic.*;
@@ -128,6 +128,17 @@ public class IntSequenceTest {
     @Test
     public void testMap() {
         assertArrayEquals(iarr(24, 2, 6, 20), seq(23, 1, 5, 19).map(x -> x + 1).toArray());
+    }
+
+    @Test
+    public void testMapToDouble() {
+        assertArrayEquals(darr(1.33d, -1.33d, 4.67d, 6.67d, 1.00d, 1.00d, 6.67d), //
+            seq(4, -4, 14, 20, 3, 3, 20).mapToDouble(x -> x / 3d).toArray(), 0.01d);
+    }
+
+    @Test
+    public void testMapToLong() {
+        assertArrayEquals(larr(17L, 2L, 20L, 22L, -2L, 24L), seq(15, 0, 18, 20, -4, 22).mapToLong(x -> x + 2).toArray());
     }
 
     @Test

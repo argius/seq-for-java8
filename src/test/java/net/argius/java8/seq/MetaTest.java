@@ -12,9 +12,9 @@ public final class MetaTest {
             "toArray", };
 
     static final String[] methodListForNumber = { "max", "min", "sum", "mapToObj", };
-    static final String[] methodListExceptInt = {}; // "mapToInt", };
-    static final String[] methodListExceptLong = {}; // "mapToLong", };
-    static final String[] methodListExceptDouble = {}; // "mapToDouble", };
+    static final String[] methodListExceptInt = { "mapToInt", };
+    static final String[] methodListExceptLong = { "mapToLong", };
+    static final String[] methodListExceptDouble = { "mapToDouble", };
 
     static void checkMethods(Class<?> c, String[]... lists) {
         for (String[] list : lists)

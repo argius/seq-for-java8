@@ -114,6 +114,22 @@ public interface DoubleSequence {
         return Sequence.of(a);
     }
 
+    default IntSequence mapToInt(DoubleToIntFunction mapper) {
+        final int n = size();
+        int[] a = new int[n];
+        for (int i = 0; i < n; i++)
+            a[i] = mapper.applyAsInt(at(i));
+        return IntSequence.of(a);
+    }
+
+    default LongSequence mapToLong(DoubleToLongFunction mapper) {
+        final int n = size();
+        long[] a = new long[n];
+        for (int i = 0; i < n; i++)
+            a[i] = mapper.applyAsLong(at(i));
+        return LongSequence.of(a);
+    }
+
     default OptionalDouble reduce(DoubleBinaryOperator op) {
         final int n = size();
         if (n == 0)

@@ -1,8 +1,8 @@
 package net.argius.java8.seq;
 
 import static net.argius.java8.seq.LongSequence.*;
-import static net.argius.java8.seq.TestUtils.larr;
-import static org.junit.Assert.assertEquals;
+import static net.argius.java8.seq.TestUtils.*;
+import static org.junit.Assert.*;
 import java.util.*;
 import java.util.concurrent.atomic.*;
 import java.util.stream.*;
@@ -122,6 +122,18 @@ public class LongSequenceTest {
     @Test
     public void testMap() {
         assertEquals(seq(26, 37, 4, 8, 22), seq(23, 34, 1, 5, 19).map(x -> x + 3));
+    }
+
+    @Test
+    public void testMapToDouble() {
+        assertArrayEquals(darr(2.857d, 3.143d, 0.714d, 0.143d, 0.143d, 1.429d), //
+            seq(20L, 22L, 5L, 1L, 1L, 10L).mapToDouble(x -> x / 7d).toArray(), 0.001d);
+    }
+
+    @Test
+    public void testMapToInt() {
+        assertArrayEquals(iarr(36, -6, 42, -24, 60, -6), //
+            seq(12L, -2L, 14L, -8L, 20L, -2L).mapToInt(x -> (int)(x * 3)).toArray());
     }
 
     @Test

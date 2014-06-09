@@ -1,7 +1,7 @@
 package net.argius.java8.seq;
 
 import static net.argius.java8.seq.DoubleSequence.*;
-import static net.argius.java8.seq.TestUtils.darr;
+import static net.argius.java8.seq.TestUtils.*;
 import static org.junit.Assert.*;
 import java.util.*;
 import java.util.concurrent.atomic.*;
@@ -106,6 +106,18 @@ public class DoubleSequenceTest {
     @Test
     public void testMap() {
         assertArrayEquals(seq(4.0d, 1.5d, 6d, -4d).toArray(), seq(8d, 3, 12, -8).map(x -> x / 2).toArray(), DELTA);
+    }
+
+    @Test
+    public void testMapToInt() {
+        assertArrayEquals(iarr(36, -20, 70, 27, 49, -12, 37, 0),
+            seq(9.07d, -5.08d, 17.73d, 6.97d, 12.40d, -3.05d, 9.38d, 0.0d).mapToInt(x -> (int)(x * 4)).toArray());
+    }
+
+    @Test
+    public void testMapToLong() {
+        assertArrayEquals(larr(19L, 66L, -12L, -4L, 23L, 59L, 0L),
+            seq(6.58d, 22.14d, -4.05d, -1.58d, 7.98d, 19.89d, -0.24d).mapToLong(x -> (long)(x * 3)).toArray());
     }
 
     @Test

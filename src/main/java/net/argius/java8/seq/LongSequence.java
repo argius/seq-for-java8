@@ -115,6 +115,22 @@ public interface LongSequence {
         return Sequence.of(a);
     }
 
+    default IntSequence mapToInt(LongToIntFunction mapper) {
+        final int n = size();
+        int[] a = new int[n];
+        for (int i = 0; i < n; i++)
+            a[i] = mapper.applyAsInt(at(i));
+        return IntSequence.of(a);
+    }
+
+    default DoubleSequence mapToDouble(LongToDoubleFunction mapper) {
+        final int n = size();
+        double[] a = new double[n];
+        for (int i = 0; i < n; i++)
+            a[i] = mapper.applyAsDouble(at(i));
+        return DoubleSequence.of(a);
+    }
+
     default OptionalLong reduce(LongBinaryOperator op) {
         final int n = size();
         if (n == 0)
