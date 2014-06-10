@@ -93,6 +93,20 @@ public interface DoubleSequence {
         return createWithoutCopy(Arrays.copyOfRange(toArray(), from, to0 + 1));
     }
 
+    default OptionalDouble find(DoublePredicate pred) {
+        return find(pred, 0);
+    }
+
+    default OptionalDouble find(DoublePredicate pred, int start) {
+        final int n = size();
+        for (int i = start; i < n; i++) {
+            final double value = at(i);
+            if (pred.test(value))
+                return OptionalDouble.of(value);
+        }
+        return OptionalDouble.empty();
+    }
+
     default boolean exists(DoublePredicate pred) {
         final int n = size();
         for (int i = 0; i < n; i++)

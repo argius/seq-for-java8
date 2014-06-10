@@ -103,6 +103,13 @@ public class LongSequenceTest {
     }
 
     @Test
+    public void testFind() {
+        assertEquals(OptionalLong.of(7L), seq(-9L, 7L, -3L, 18L, 3L, 19L, 12L).find(x -> x > 1L));
+        assertEquals(OptionalLong.of(-6L), seq(8L, -7L, 0L, 3L, 13L, -6L, -19L).find(x -> x % 2 == 0, 3));
+        assertEquals(OptionalLong.empty(), seq(-15L, -11L, 17L, -19L, -13L, 5L, 7L).find(x -> x % 2 == 0, 3));
+    }
+
+    @Test
     public void testFold() {
         assertEquals(12L, seq(1, 6, 2).fold(3, (x, y) -> x + y));
         assertEquals(3L, seq().fold(3, (x, y) -> x + y));

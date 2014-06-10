@@ -156,6 +156,14 @@ public final class SequenceTest {
     }
 
     @Test
+    public void testFind() {
+        Sequence<String> seq = seq("java", "scala", "perl", "ruby", "python");
+        assertEquals(Optional.of("scala"), seq.find(x -> x.length() == 5));
+        assertEquals(Optional.of("python"), seq.find(x -> x.length() > 4, 2));
+        assertEquals(Optional.empty(), seq.find(x -> x.endsWith("a"), 2));
+    }
+
+    @Test
     public void testFold() {
         assertEquals("FACE", seq("A", "C", "E").fold("F", (x, y) -> x + y));
         // TODO

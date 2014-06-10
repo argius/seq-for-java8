@@ -111,6 +111,13 @@ public class IntSequenceTest {
     }
 
     @Test
+    public void testFind() {
+        assertEquals(OptionalInt.of(-16), seq(3, -11, 9, -5, -16, 2, 16).find(x -> x % 2 == 0));
+        assertEquals(OptionalInt.of(-3), seq(-7, -10, 4, -3, 15, 13, 8).find(x -> x < 0, 3));
+        assertEquals(OptionalInt.empty(), seq(-7, -10, 4, -3, 15, 13, 8).find(x -> x < 0, 5));
+    }
+
+    @Test
     public void testFold() {
         assertEquals(11, seq(1, 2, 3).fold(5, (x, y) -> x + y));
         assertEquals(5, seq().fold(5, (x, y) -> x + y));

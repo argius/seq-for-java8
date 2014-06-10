@@ -67,6 +67,16 @@ public class DoubleSequenceTest {
     }
 
     @Test
+    public void testFind() {
+        assertEquals(OptionalDouble.of(-6.42d),
+            seq(21.54d, -6.42d, -0.67d, -4.31d, -1.29d, 12.39d, 1.93d).find(x -> x < 0.1d));
+        assertEquals(OptionalDouble.of(14.34d),
+            seq(20.31d, 14.04d, 0.82d, 3.14d, 14.34d, -19.58d, -0.00d).find(x -> x > 9.1d, 3));
+        assertEquals(OptionalDouble.empty(),
+            seq(-3.85d, -7.46d, 15.06d, 13.29d, -12.29d, -7.37d, 3.53d).find(x -> x > 14.1d, 3));
+    }
+
+    @Test
     public void testFold() {
         assertEquals(435.6d, seq(134.3d, -53, 343, 8, 3, -1).fold(1.3d, (x, y) -> x + y), DELTA);
         assertEquals(-52.1d, seq(-53.8d).fold(1.7d, (x, y) -> x + y), DELTA);

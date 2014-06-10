@@ -119,6 +119,20 @@ public interface IntSequence {
         return createWithoutCopy(Arrays.copyOfRange(toArray(), from, to0 + 1));
     }
 
+    default OptionalInt find(IntPredicate pred) {
+        return find(pred, 0);
+    }
+
+    default OptionalInt find(IntPredicate pred, int start) {
+        final int n = size();
+        for (int i = start; i < n; i++) {
+            final int value = at(i);
+            if (pred.test(value))
+                return OptionalInt.of(value);
+        }
+        return OptionalInt.empty();
+    }
+
     default boolean contains(int value) {
         final int n = size();
         for (int i = 0; i < n; i++)

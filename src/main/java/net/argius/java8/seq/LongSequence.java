@@ -94,6 +94,20 @@ public interface LongSequence {
         return createWithoutCopy(Arrays.copyOfRange(toArray(), from, to0 + 1));
     }
 
+    default OptionalLong find(LongPredicate pred) {
+        return find(pred, 0);
+    }
+
+    default OptionalLong find(LongPredicate pred, int start) {
+        final int n = size();
+        for (int i = start; i < n; i++) {
+            final long value = at(i);
+            if (pred.test(value))
+                return OptionalLong.of(value);
+        }
+        return OptionalLong.empty();
+    }
+
     default boolean contains(long value) {
         final int n = size();
         for (int i = 0; i < n; i++)

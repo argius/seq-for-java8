@@ -75,6 +75,20 @@ public interface Sequence<E> extends Iterable<E> {
         return seq(toList().subList(from, to0 + 1));
     }
 
+    default Optional<E> find(Predicate<E> pred) {
+        return find(pred, 0);
+    }
+
+    default Optional<E> find(Predicate<E> pred, int start) {
+        final int n = size();
+        for (int i = start; i < n; i++) {
+            E value = at(i);
+            if (pred.test(value))
+                return Optional.of(value);
+        }
+        return Optional.empty();
+    }
+
     default boolean contains(E o) {
         final int n = size();
         for (int i = 0; i < n; i++)
