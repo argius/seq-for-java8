@@ -1,6 +1,6 @@
-Seq-for-Java8 [![Build Status]
+Seq-for-Java8
 ========================================
-(https://travis-ci.org/argius/seq-for-java8.png)](https://travis-ci.org/argius/seq-for-java8)
+[![Build Status](https://travis-ci.org/argius/seq-for-java8.png)](https://travis-ci.org/argius/seq-for-java8)
 
 Seq-for-Java8 - the library of sequencial containers which is neither Collection nor Stream
 
