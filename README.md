@@ -1,5 +1,6 @@
-Seq-for-Java8 [![Build Status](https://travis-ci.org/argius/seq-for-java8.png)](https://travis-ci.org/argius/seq-for-java8)
+Seq-for-Java8 [![Build Status]
 ========================================
+(https://travis-ci.org/argius/seq-for-java8.png)](https://travis-ci.org/argius/seq-for-java8)
 
 Seq-for-Java8 - the library of sequencial containers which is neither Collection nor Stream
 
@@ -22,10 +23,20 @@ Sequence<String> seq = Sequence.of("ant", "bean", "coffee");
 List<String> list = seq.filter(x -> !x.equals("ant")).reverse().toList();
 // => [coffee, bean]
 
+Map<String, Class<?>> y = Sequence.<Class<?>>of(String.class, Integer.class)
+    .toMapWithValue(x -> x.getSimpleName());
+// => {Integer=class java.lang.Integer, String=class java.lang.String}
+
 // import static net.argius.java8.seq.IntSequence.seq;
 double average = seq(-100, 13, 25, 8, 1).drop(1).average();
 // => 11.75
 ```
+
+
+Notice
+--------------------
+
+These interfaces may be changed without notice during the beta version.
 
 
 License
