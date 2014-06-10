@@ -100,10 +100,9 @@ public interface LongSequence {
 
     default LongSequence map(LongUnaryOperator mapper) {
         final int n = size();
-        long[] values = toArray();
         long[] a = new long[n];
         for (int i = 0; i < n; i++)
-            a[i] = mapper.applyAsLong(values[i]);
+            a[i] = mapper.applyAsLong(at(i));
         return createWithoutCopy(a);
     }
 
@@ -135,11 +134,9 @@ public interface LongSequence {
         final int n = size();
         if (n == 0)
             return OptionalLong.empty();
-        long[] a = toArray();
-        long result = a[0];
-        for (int i = 1; i < n; i++) {
-            result = op.applyAsLong(result, a[i]);
-        }
+        long result = at(0);
+        for (int i = 1; i < n; i++)
+            result = op.applyAsLong(result, at(i));
         return OptionalLong.of(result);
     }
 
@@ -147,10 +144,9 @@ public interface LongSequence {
         final int n = size();
         if (n == 0)
             return identity;
-        long[] a = toArray();
         long result = identity;
         for (int i = 0; i < n; i++)
-            result = op.applyAsLong(result, a[i]);
+            result = op.applyAsLong(result, at(i));
         return result;
     }
 
@@ -167,9 +163,8 @@ public interface LongSequence {
 
     default void forEach(LongConsumer action) {
         final int n = size();
-        long[] values = toArray();
         for (int i = 0; i < n; i++)
-            action.accept(values[i]);
+            action.accept(at(i));
     }
 
     long sum();
@@ -215,6 +210,7 @@ public interface LongSequence {
         newLength += firstLength;
         for (LongSequence o : rest)
             newLength += o.size();
+        // XXX copy twice
         long[] a = Arrays.copyOf(toArray(), newLength);
         int p = selfLength;
         System.arraycopy(first.toArray(), 0, a, p, firstLength);

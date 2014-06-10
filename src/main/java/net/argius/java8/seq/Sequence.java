@@ -48,9 +48,7 @@ public interface Sequence<E> extends Iterable<E> {
 
     int size();
 
-    default E at(int index) {
-        return toArray()[index];
-    }
+    E at(int index);
 
     Sequence<E> filter(Predicate<? super E> predicate);
 
@@ -114,10 +112,9 @@ public interface Sequence<E> extends Iterable<E> {
         final int n = size();
         if (n == 0)
             return Optional.empty();
-        E[] a = toArray();
-        E result = a[0];
+        E result = at(0);
         for (int i = 1; i < n; i++)
-            result = op.apply(result, a[i]);
+            result = op.apply(result, at(i));
         return Optional.of(result);
     }
 
@@ -125,10 +122,9 @@ public interface Sequence<E> extends Iterable<E> {
         final int n = size();
         if (n == 0)
             return identity;
-        E[] a = toArray();
         E result = identity;
         for (int i = 0; i < n; i++)
-            result = op.apply(result, a[i]);
+            result = op.apply(result, at(i));
         return result;
     }
 
@@ -180,6 +176,7 @@ public interface Sequence<E> extends Iterable<E> {
         newLength += firstLength;
         for (Sequence<? extends E> o : rest)
             newLength += o.size();
+        // XXX copy twice
         E[] a = Arrays.copyOf(toArray(), newLength);
         int p = selfLength;
         System.arraycopy(first.toArray(), 0, a, p, firstLength);
@@ -230,14 +227,14 @@ public interface Sequence<E> extends Iterable<E> {
 
     default <R> Map<E, R> toMapWithKey(Function<? super E, ? extends R> mapper) {
         Map<E, R> m = new HashMap<>();
-        for (E k : toArray())
+        for (E k : this)
             m.put(k, mapper.apply(k));
         return m;
     }
 
     default <R> Map<R, E> toMapWithValue(Function<? super E, ? extends R> mapper) {
         Map<R, E> m = new HashMap<>();
-        for (E k : toArray())
+        for (E k : this)
             m.put(mapper.apply(k), k);
         return m;
     }

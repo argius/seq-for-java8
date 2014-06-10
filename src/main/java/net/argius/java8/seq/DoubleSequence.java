@@ -99,10 +99,9 @@ public interface DoubleSequence {
 
     default DoubleSequence map(DoubleUnaryOperator mapper) {
         final int n = size();
-        double[] values = toArray();
         double[] a = new double[n];
         for (int i = 0; i < n; i++)
-            a[i] = mapper.applyAsDouble(values[i]);
+            a[i] = mapper.applyAsDouble(at(i));
         return createWithoutCopy(a);
     }
 
@@ -134,11 +133,9 @@ public interface DoubleSequence {
         final int n = size();
         if (n == 0)
             return OptionalDouble.empty();
-        double[] a = toArray();
-        double result = a[0];
-        for (int i = 1; i < n; i++) {
-            result = op.applyAsDouble(result, a[i]);
-        }
+        double result = at(0);
+        for (int i = 1; i < n; i++)
+            result = op.applyAsDouble(result, at(i));
         return OptionalDouble.of(result);
     }
 
@@ -146,10 +143,9 @@ public interface DoubleSequence {
         final int n = size();
         if (n == 0)
             return identity;
-        double[] a = toArray();
         double result = identity;
         for (int i = 0; i < n; i++)
-            result = op.applyAsDouble(result, a[i]);
+            result = op.applyAsDouble(result, at(i));
         return result;
     }
 
@@ -166,9 +162,8 @@ public interface DoubleSequence {
 
     default void forEach(DoubleConsumer action) {
         final int n = size();
-        double[] values = toArray();
         for (int i = 0; i < n; i++)
-            action.accept(values[i]);
+            action.accept(at(i));
     }
 
     double sum();
@@ -214,6 +209,7 @@ public interface DoubleSequence {
         newLength += firstLength;
         for (DoubleSequence o : rest)
             newLength += o.size();
+        // XXX copy twice
         double[] a = Arrays.copyOf(toArray(), newLength);
         int p = selfLength;
         System.arraycopy(first.toArray(), 0, a, p, firstLength);

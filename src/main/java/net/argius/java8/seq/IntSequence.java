@@ -125,10 +125,9 @@ public interface IntSequence {
 
     default IntSequence map(IntUnaryOperator mapper) {
         final int n = size();
-        int[] values = toArray();
         int[] a = new int[n];
         for (int i = 0; i < n; i++)
-            a[i] = mapper.applyAsInt(values[i]);
+            a[i] = mapper.applyAsInt(at(i));
         return createWithoutCopy(a);
     }
 
@@ -161,11 +160,9 @@ public interface IntSequence {
         final int n = size();
         if (n == 0)
             return OptionalInt.empty();
-        int[] a = toArray();
-        int result = a[0];
-        for (int i = 1; i < n; i++) {
-            result = op.applyAsInt(result, a[i]);
-        }
+        int result = at(0);
+        for (int i = 1; i < n; i++)
+            result = op.applyAsInt(result, at(i));
         return OptionalInt.of(result);
     }
 
@@ -173,10 +170,9 @@ public interface IntSequence {
         final int n = size();
         if (n == 0)
             return identity;
-        int[] a = toArray();
         int result = identity;
         for (int i = 0; i < n; i++)
-            result = op.applyAsInt(result, a[i]);
+            result = op.applyAsInt(result, at(i));
         return result;
     }
 
@@ -193,9 +189,8 @@ public interface IntSequence {
 
     default void forEach(IntConsumer action) {
         final int n = size();
-        int[] values = toArray();
         for (int i = 0; i < n; i++)
-            action.accept(values[i]);
+            action.accept(at(i));
     }
 
     int sum();

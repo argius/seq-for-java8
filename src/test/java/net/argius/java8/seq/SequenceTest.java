@@ -12,7 +12,7 @@ public final class SequenceTest {
 
     static final class SequenceImpl0<E> implements Sequence<E> {
 
-        private int size;
+        int size;
         private E[] values;
 
         @SafeVarargs
@@ -39,8 +39,7 @@ public final class SequenceTest {
 
         @Override
         public Sequence<E> filter(Predicate<? super E> predicate) {
-            // TODO Auto-generated method stub
-            return null;
+            throw new UnsupportedOperationException();
         }
 
         @Override
@@ -54,8 +53,12 @@ public final class SequenceTest {
 
         @Override
         public Iterator<E> iterator() {
-            // TODO Auto-generated method stub
-            return null;
+            return new IteratorImpl();
+        }
+
+        @Override
+        public E at(int index) {
+            return values[index];
         }
 
         @Override
@@ -71,6 +74,31 @@ public final class SequenceTest {
         @Override
         public String toString() {
             return Arrays.toString(values);
+        }
+
+        final class IteratorImpl implements Iterator<E> {
+
+            private int p;
+
+            IteratorImpl() {
+                this.p = -1;
+            }
+
+            @Override
+            public boolean hasNext() {
+                if (p + 1 < size) {
+                    ++p;
+                    return true;
+                }
+                else
+                    return false;
+            }
+
+            @Override
+            public E next() {
+                return at(p);
+            }
+
         }
 
     }
