@@ -10,7 +10,7 @@
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <title>Seq-for-java8 by argius</title>
+    <title>Seq-for-Java8 by argius</title>
   </head>
 
   <body>
@@ -18,13 +18,15 @@
       <div class="inner">
 
         <header>
-          <h1>Seq-for-java8</h1>
+          <h1>Seq-for-Java8</h1>
           <h2>Sequences which are neither Collection nor Stream</h2>
         </header>
 
         <section id="downloads" class="clearfix">
+<!--
           <a href="https://github.com/argius/seq-for-java8/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
           <a href="https://github.com/argius/seq-for-java8/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
+ -->
           <a href="https://github.com/argius/seq-for-java8" id="view-on-github" class="button"><span>View on GitHub</span></a>
         </section>
 
@@ -51,6 +53,10 @@ However, Sequences are immutable and stateless.</p>
 Sequence&lt;String&gt; seq = Sequence.of("ant", "bean", "coffee");
 List&lt;String&gt; list = seq.filter(x -&gt; !x.equals("ant")).reverse().toList();
 // =&gt; [coffee, bean]
+
+Map&lt;String, Class&lt;?&gt;&gt; map = Sequence.&lt;Class&lt;?&gt;&gt;of(String.class, Integer.class)
+    .toMapWithValue(x -&gt; x.getSimpleName());
+// =&gt; {Integer=class java.lang.Integer, String=class java.lang.String}
 
 // import static net.argius.java8.seq.IntSequence.seq;
 double average = seq(-100, 13, 25, 8, 1).drop(1).average();
