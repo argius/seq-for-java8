@@ -7,20 +7,23 @@ import org.junit.*;
 
 public final class MetaTest {
 
-    static final String[] methodList1 = { "of", "seq", "empty", "size", "at", "subSequence", "filter", "head", "tail",
-            "map", "forEach", "fold", "reduce", "distinct", "reverse", "sort", "sortWith", "concat", "stream",
-            "toArray", };
+    static final String[] methodList1 = { "at", "concat", "distinct", "drop", "empty", "exists", "filter", "find",
+            "fold", "forEach", "head", "indexWhere", "map", "of", "reduce", "reverse", "seq", "size", "sort",
+            "sortWith", "stream", "subSequence", "tail", "take", "toArray", };
 
-    static final String[] methodListForNumber = { "max", "min", "sum", "mapToObj", };
+    static final String[] methodListForNumber = { "average", "mapToObj", "max", "min", "sum", };
     static final String[] methodListExceptInt = { "mapToInt", };
+    static final String[] methodListOnlyInt = { "random", "range", };
     static final String[] methodListExceptLong = { "mapToLong", };
-    static final String[] methodListExceptDouble = { "mapToDouble", };
+    static final String[] methodListExceptDouble = { "contains", "indexOf", "mapToDouble", };
 
     static void checkMethods(Class<?> c, String[]... lists) {
-        for (String[] list : lists)
+        for (String[] list : lists) {
+            assert Sequence.of(list).toSet().size() == list.length : "list not unique";
             for (final String methodName : list)
                 if (!TestUtils.hasMethod(c, methodName))
                     fail(String.format("class %s does not have [%s] method", c.getSimpleName(), methodName));
+        }
     }
 
     @Test
