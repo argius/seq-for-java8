@@ -75,6 +75,38 @@ public interface Sequence<E> extends Iterable<E> {
         return seq(toList().subList(from, to0 + 1));
     }
 
+    default boolean contains(E o) {
+        final int n = size();
+        for (int i = 0; i < n; i++)
+            if (Objects.equals(at(i), o))
+                return true;
+        return false;
+    }
+
+    default boolean exists(Predicate<E> pred) {
+        final int n = size();
+        for (int i = 0; i < n; i++)
+            if (pred.test(at(i)))
+                return true;
+        return false;
+    }
+
+    default int indexOf(E o) {
+        final int n = size();
+        for (int i = 0; i < n; i++)
+            if (Objects.equals(at(i), o))
+                return i;
+        return -1;
+    }
+
+    default int indexWhere(Predicate<E> pred) {
+        final int n = size();
+        for (int i = 0; i < n; i++)
+            if (pred.test(at(i)))
+                return i;
+        return -1;
+    }
+
     default <R> Sequence<R> map(Function<? super E, ? extends R> mapper) {
         final int n = size();
         @SuppressWarnings("unchecked")

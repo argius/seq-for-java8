@@ -14,27 +14,7 @@ public class IntSequenceTest {
         return new IntSequence() {
 
             @Override
-            public int[] toArray() {
-                return Arrays.copyOf(a, a.length);
-            }
-
-            @Override
-            public int sum() {
-                throw new UnsupportedOperationException();
-            }
-
-            @Override
-            public IntSequence sortWith(int fromIndex, int toIndex, IntComparator cmp) {
-                throw new UnsupportedOperationException();
-            }
-
-            @Override
-            public int size() {
-                return a.length;
-            }
-
-            @Override
-            public OptionalInt min() {
+            public int at(int index) {
                 throw new UnsupportedOperationException();
             }
 
@@ -44,13 +24,33 @@ public class IntSequenceTest {
             }
 
             @Override
-            public int at(int index) {
+            public OptionalInt min() {
                 throw new UnsupportedOperationException();
             }
 
             @Override
             public int product() {
                 throw new UnsupportedOperationException();
+            }
+
+            @Override
+            public int size() {
+                return a.length;
+            }
+
+            @Override
+            public IntSequence sortWith(int fromIndex, int toIndex, IntComparator cmp) {
+                throw new UnsupportedOperationException();
+            }
+
+            @Override
+            public int sum() {
+                throw new UnsupportedOperationException();
+            }
+
+            @Override
+            public int[] toArray() {
+                return Arrays.copyOf(a, a.length);
             }
 
         };
@@ -73,6 +73,12 @@ public class IntSequenceTest {
     }
 
     @Test
+    public void testContains() {
+        assertTrue(seq(32, 42, 28, 20, -2).contains(28));
+        assertFalse(seq(15, 25, 10, -3, -13).contains(3));
+    }
+
+    @Test
     public void testDistinct() {
         assertEquals(seq(8, 3, 2, 12, 18), seq(8, 3, 2, 12, 3, 8, 18).distinct());
     }
@@ -91,6 +97,12 @@ public class IntSequenceTest {
         IntSequence empty2 = IntSequence.empty();
         assertEquals(seq(), empty1);
         assertSame(empty1, empty2);
+    }
+
+    @Test
+    public void testExists() {
+        assertTrue(seq(23, 8, 30, 16, 22, 36, 0, 51, 36).exists(x -> x > 0));
+        assertFalse(seq(47, 13, -8, 2, 34, 20, 0, 6, 40).exists(x -> x < -10));
     }
 
     @Test
@@ -123,6 +135,18 @@ public class IntSequenceTest {
         assertEquals(4, seq(4, 23, 33, 1, 5, 19).head().getAsInt());
         assertTrue(seq(4).head().isPresent());
         assertFalse(seq().head().isPresent());
+    }
+
+    @Test
+    public void testIndexOf() {
+        assertEquals(3, seq(34, 20, 13, 46, 20, 7, 0, 3, -5).indexOf(46));
+        assertEquals(-1, seq(49, 16, 25, 44, 27, -7, 41, 19, 51).indexOf(-6));
+    }
+
+    @Test
+    public void testIndexWhere() {
+        assertEquals(2, seq(41, 11, 17, 21, 48, 31, 11, 4, 42).indexWhere(x -> x >= 16 && x < 30));
+        assertEquals(-1, seq(40, 3, 37, 27, 0, 50, 9, 22, 21).indexWhere(x -> x < 0));
     }
 
     @Test

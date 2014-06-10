@@ -22,6 +22,11 @@ public final class SequenceTest {
         }
 
         @Override
+        public E at(int index) {
+            return values[index];
+        }
+
+        @Override
         public boolean equals(Object obj) {
             if (this == obj)
                 return true;
@@ -54,11 +59,6 @@ public final class SequenceTest {
         @Override
         public Iterator<E> iterator() {
             return new IteratorImpl();
-        }
-
-        @Override
-        public E at(int index) {
-            return values[index];
         }
 
         @Override
@@ -123,6 +123,13 @@ public final class SequenceTest {
     }
 
     @Test
+    public void testContains() {
+        assertTrue(seq("java", "scala", "perl", "ruby", "python").contains("perl"));
+        assertFalse(seq("java", "scala", "perl", "ruby", "python").contains("haskell"));
+        assertFalse(seq().contains("java"));
+    }
+
+    @Test
     public void testDistinct() {
         String[] a = arr("java", "scala", "perl", "java", "python");
         assertEquals(seq("java", "scala", "perl", "python"), seq0(a).distinct());
@@ -133,6 +140,13 @@ public final class SequenceTest {
         assertEquals(seq("perl", "ruby", "python"), seq("java", "scala", "perl", "ruby", "python").drop(2));
         assertEquals(seq(), seq("java", "scala", "perl", "ruby", "python").drop(8));
         assertEquals(seq(), seq().drop(1));
+    }
+
+    @Test
+    public void testExists() {
+        assertTrue(seq("java", "scala", "perl", "ruby", "python").exists(x -> x.length() == 6));
+        assertFalse(seq("java", "scala", "perl", "ruby", "python").exists(x -> x.length() == 7));
+        assertFalse(seq("").tail().exists(x -> x.isEmpty()));
     }
 
     @Test
@@ -154,6 +168,20 @@ public final class SequenceTest {
         assertEquals(Optional.of("java"), seq("java", "scala", "perl", "ruby", "python").head());
         assertEquals(Optional.of("scala"), seq("scala", "perl", "ruby", "python").head());
         assertEquals(Optional.empty(), seq().head());
+    }
+
+    @Test
+    public void testIndexOf() {
+        assertEquals(2, seq("java", "scala", "perl", "ruby", "python").indexOf("perl"));
+        assertEquals(-1, seq("java", "scala", "perl", "ruby", "python").indexOf("haskell"));
+        assertEquals(-1, seq().indexOf("java"));
+    }
+
+    @Test
+    public void testIndexWhere() {
+        assertEquals(4, seq("java", "scala", "perl", "ruby", "python").indexWhere(x -> x.length() == 6));
+        assertEquals(-1, seq("java", "scala", "perl", "ruby", "python").indexWhere(x -> x.length() == 7));
+        assertEquals(-1, seq("").tail().indexWhere(x -> x.isEmpty()));
     }
 
     @Test

@@ -119,6 +119,38 @@ public interface IntSequence {
         return createWithoutCopy(Arrays.copyOfRange(toArray(), from, to0 + 1));
     }
 
+    default boolean contains(int value) {
+        final int n = size();
+        for (int i = 0; i < n; i++)
+            if (at(i) == value)
+                return true;
+        return false;
+    }
+
+    default boolean exists(IntPredicate pred) {
+        final int n = size();
+        for (int i = 0; i < n; i++)
+            if (pred.test(at(i)))
+                return true;
+        return false;
+    }
+
+    default int indexOf(int value) {
+        final int n = size();
+        for (int i = 0; i < n; i++)
+            if (at(i) == value)
+                return i;
+        return -1;
+    }
+
+    default int indexWhere(IntPredicate pred) {
+        final int n = size();
+        for (int i = 0; i < n; i++)
+            if (pred.test(at(i)))
+                return i;
+        return -1;
+    }
+
     OptionalInt max();
 
     OptionalInt min();

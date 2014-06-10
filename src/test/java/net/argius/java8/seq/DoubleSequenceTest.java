@@ -56,6 +56,12 @@ public class DoubleSequenceTest {
     }
 
     @Test
+    public void testExists() {
+        assertTrue(seq(50.11d, 46.33d, 22.36d, -10.62d, 46.58d, 10.29d, 17.21d, -4.43d, 13.62d).exists(x -> x < 10.6d));
+        assertFalse(seq(-0.61d, 21.05d, 18.48d, 14.65d, 18.69d, -10.12d, -8.16d, 3.89d, 19.61d).exists(x -> x == 18.5d));
+    }
+
+    @Test
     public void testFilter() {
         assertEquals(seq(8.1d, 12, 8, 18), seq(8.1d, 3.6, 2, 12, -3, 8, 18).filter(x -> x > 5));
     }
@@ -101,6 +107,14 @@ public class DoubleSequenceTest {
     public void testHead() {
         assertEquals(OptionalDouble.of(8.2d), seq(8.2d, 3, 12, -8).head());
         assertEquals(OptionalDouble.empty(), seq().head());
+    }
+
+    @Test
+    public void testIndexWhere() {
+        assertEquals(6,
+            seq(7.74d, 35.33d, -1.04d, 14.77d, -10.91d, -7.21d, 25.87d, 8.36d, 49.55d).indexWhere(x -> ((int)x) == 25));
+        assertEquals(-1,
+            seq(51.02d, 9.25d, 49.79d, 3.56d, -0.32d, 49.38d, 29.28d, 39.90d, 9.53d).indexWhere(x -> x < -1));
     }
 
     @Test

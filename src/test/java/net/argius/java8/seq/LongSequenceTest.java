@@ -15,27 +15,7 @@ public class LongSequenceTest {
         return new LongSequence() {
 
             @Override
-            public long[] toArray() {
-                return Arrays.copyOf(a, a.length);
-            }
-
-            @Override
-            public long sum() {
-                throw new UnsupportedOperationException();
-            }
-
-            @Override
-            public LongSequence sortWith(int fromIndex, int toIndex, LongComparator cmp) {
-                throw new UnsupportedOperationException();
-            }
-
-            @Override
-            public int size() {
-                return a.length;
-            }
-
-            @Override
-            public OptionalLong min() {
+            public long at(int index) {
                 throw new UnsupportedOperationException();
             }
 
@@ -45,13 +25,33 @@ public class LongSequenceTest {
             }
 
             @Override
-            public long at(int index) {
+            public OptionalLong min() {
                 throw new UnsupportedOperationException();
             }
 
             @Override
             public long product() {
                 throw new UnsupportedOperationException();
+            }
+
+            @Override
+            public int size() {
+                return a.length;
+            }
+
+            @Override
+            public LongSequence sortWith(int fromIndex, int toIndex, LongComparator cmp) {
+                throw new UnsupportedOperationException();
+            }
+
+            @Override
+            public long sum() {
+                throw new UnsupportedOperationException();
+            }
+
+            @Override
+            public long[] toArray() {
+                return Arrays.copyOf(a, a.length);
             }
 
         };
@@ -65,6 +65,12 @@ public class LongSequenceTest {
     @Test
     public void testConcat() {
         assertEquals(seq(8L, 3, 2, 12, -3, 6, 18), seq(8L, 3, 2).concat(seq(12L), seq(-3L, 6, 18)));
+    }
+
+    @Test
+    public void testContains() {
+        assertTrue(seq(39L, 33L, 29L, 24L, 32L, 48L, 27L, 30L, 38L).contains(33L));
+        assertFalse(seq(9L, 47L, -1L, -8L, 45L, 34L, 13L, -2L, 45L).contains(46L));
     }
 
     @Test
@@ -83,6 +89,12 @@ public class LongSequenceTest {
     @Test
     public void testEmpty() {
         assertEquals(seq(), LongSequence.empty());
+    }
+
+    @Test
+    public void testExists() {
+        assertTrue(seq(27L, 31L, 10L, 0L, 11L, 41L, 34L, -4L, 0L).exists(x -> x == 10));
+        assertFalse(seq(16L, 8L, -2L, 5L, 36L, -8L, 39L, 5L, 38L).exists(x -> x == 1));
     }
 
     @Test
@@ -120,6 +132,18 @@ public class LongSequenceTest {
     }
 
     @Test
+    public void testIndexOf() {
+        assertEquals(5, seq(14L, -9L, 10L, 26L, -4L, 30L, 0L, 24L, 5L).indexOf(30L));
+        assertEquals(-1, seq(16L, 2L, 48L, 51L, 5L, -7L, 5L, 50L, -6L).indexOf(3));
+    }
+
+    @Test
+    public void testIndexWhere() {
+        assertEquals(1, seq(15L, -6L, -8L, -5L, 8L, -9L, 36L, 4L, 24L).indexWhere(x -> x < 0L));
+        assertEquals(-1, seq(10L, 15L, 39L, 23L, 27L, 33L, 23L, -3L, -2L).indexWhere(x -> x < -3L));
+    }
+
+    @Test
     public void testMap() {
         assertEquals(seq(26, 37, 4, 8, 22), seq(23, 34, 1, 5, 19).map(x -> x + 3));
     }
@@ -142,13 +166,13 @@ public class LongSequenceTest {
     }
 
     @Test
-    public void testOfLongArray() {
-        assertEquals(seq(1, 2, 3), of(1, 2, 3));
+    public void testOfCollectionOfLong() {
+        assertEquals(seq(44L, -9L, 18L, 39L, 51L, 19L), of(Arrays.asList(44L, -9L, 18L, 39L, 51L, 19L)));
     }
 
     @Test
-    public void testOfCollectionOfLong() {
-        assertEquals(seq(44L, -9L, 18L, 39L, 51L, 19L), of(Arrays.asList(44L, -9L, 18L, 39L, 51L, 19L)));
+    public void testOfLongArray() {
+        assertEquals(seq(1, 2, 3), of(1, 2, 3));
     }
 
     @Test
