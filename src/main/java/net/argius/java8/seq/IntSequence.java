@@ -54,6 +54,32 @@ public interface IntSequence {
         return createWithoutCopy(a);
     }
 
+    static IntSequence range(int start, int end) {
+        final int length = end - start + 1;
+        if (length <= 0)
+            throw new IllegalArgumentException(String.format("illegal range: %d to %d", start, end));
+        int[] a = new int[length];
+        for (int i = 0; i < length; i++)
+            a[i] = start + i;
+        return createWithoutCopy(a);
+    }
+
+    static IntSequence range(int start, int end, int step) {
+        final int length;
+        if (step == 0)
+            length = -1;
+        else if (step < 0)
+            length = (start - end) / (-step) + 1;
+        else
+            length = (end - start) / step + 1;
+        if (length <= 0)
+            throw new IllegalArgumentException(String.format("illegal range: %d to %d step %d", start, end, step));
+        int[] a = new int[length];
+        for (int i = 0; i < length; i++)
+            a[i] = start + i * step;
+        return createWithoutCopy(a);
+    }
+
     int size();
 
     int at(int index);

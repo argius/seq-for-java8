@@ -206,8 +206,34 @@ public class IntSequenceTest {
 
     @Test
     public void testRange() {
-        // TODO do later
-        // assertEquals(seq(1, 2, 3, 4), IntSequence.range(1, 4));
+        assertEquals(seq(2, 3, 4, 5, 6), IntSequence.range(2, 6));
+        try {
+            IntSequence.range(5, 4);
+            fail("requires an exception");
+        } catch (IllegalArgumentException e) {
+            assertEquals("illegal range: 5 to 4", e.getMessage());
+        }
+        assertEquals(seq(-12, -9, -6, -3, 0, 3), IntSequence.range(-12, 3, 3));
+        // with step
+        assertEquals(seq(5, 3, 1, -1, -3), IntSequence.range(5, -4, -2));
+        try {
+            IntSequence.range(5, 4, 1);
+            fail("requires an exception");
+        } catch (IllegalArgumentException e) {
+            assertEquals("illegal range: 5 to 4 step 1", e.getMessage());
+        }
+        try {
+            IntSequence.range(4, 5, -1);
+            fail("requires an exception");
+        } catch (IllegalArgumentException e) {
+            assertEquals("illegal range: 4 to 5 step -1", e.getMessage());
+        }
+        try {
+            IntSequence.range(4, 5, 0);
+            fail("requires an exception");
+        } catch (IllegalArgumentException e) {
+            assertEquals("illegal range: 4 to 5 step 0", e.getMessage());
+        }
     }
 
     @Test
