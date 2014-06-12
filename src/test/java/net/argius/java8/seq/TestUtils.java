@@ -49,7 +49,7 @@ final class TestUtils {
     }
 
     @SafeVarargs
-    static <E> E[] arr(E... a) {
+    static <T> T[] arr(T... a) {
         return a;
     }
 

@@ -5,91 +5,84 @@ import java.util.*;
 import java.util.function.*;
 import java.util.stream.*;
 
-public interface Sequence<E> extends Iterable<E> {
+public interface Sequence<T> extends Iterable<T> {
 
     @SafeVarargs
-    static <E> Sequence<E> of(E... a) {
+    static <T> Sequence<T> of(T... a) {
         return createWithCopy(a);
     }
 
-    static <E> Sequence<E> of(Collection<E> collection) {
+    static <T> Sequence<T> of(Collection<T> collection) {
         return createWithCopy(collection);
     }
 
-    static <E> Sequence<E> of(Stream<E> stream) {
+    static <T> Sequence<T> of(Stream<T> stream) {
         return createWithoutCopy(stream.collect(Collectors.toList()));
     }
 
     @SafeVarargs
-    static <E> Sequence<E> seq(E... a) {
+    static <T> Sequence<T> seq(T... a) {
         return createWithCopy(a);
     }
 
-    static <E> Sequence<E> seq(Collection<E> collection) {
+    static <T> Sequence<T> seq(Collection<T> collection) {
         return createWithCopy(collection);
     }
 
-    static <E> Sequence<E> seq(Stream<E> stream) {
+    static <T> Sequence<T> seq(Stream<T> stream) {
         return createWithoutCopy(stream.collect(Collectors.toList()));
     }
 
-    /**
-     * Returns an empty Sequence.
-     * 
-     * @param <E>
-     *            generic type of Sequence
-     * @return an empty Sequence
-     */
-    static <E> Sequence<E> empty() {
+    static <T> Sequence<T> empty() {
         @SuppressWarnings("unchecked")
-        Sequence<E> seq = (Sequence<E>)SequenceFactory.EMPTY;
+        Sequence<T> seq = (Sequence<T>)SequenceFactory.EMPTY;
         return seq;
     }
 
     int size();
 
-    E at(int index);
+    T at(int index);
 
-    Sequence<E> filter(Predicate<? super E> predicate);
+    Sequence<T> filter(Predicate<? super T> predicate);
 
-    default Optional<E> head() {
+    default Optional<T> head() {
         return (size() == 0) ? Optional.empty() : Optional.of(at(0));
     }
 
-    default Sequence<E> tail() {
+    default Sequence<T> tail() {
         return (size() > 1) ? subSequence(1, Integer.MAX_VALUE) : empty();
     }
 
-    default Sequence<E> take(int count) {
+    default Sequence<T> take(int count) {
         return (count == 0) ? empty() : subSequence(0, count - 1);
     }
 
-    default Sequence<E> drop(int count) {
+    default Sequence<T> drop(int count) {
         final int n = size();
         return (count >= n) ? empty() : subSequence(count, n);
     }
 
-    default Sequence<E> subSequence(int from, int to) {
+    default Sequence<T> subSequence(int from, int to) {
         final int n = size() - 1;
         final int to0 = (to < n) ? to : n;
         return seq(toList().subList(from, to0 + 1));
     }
 
-    default Optional<E> find(Predicate<E> pred) {
+    default Optional<T> find(Predicate<T> pred) {
         return find(pred, 0);
     }
 
-    default Optional<E> find(Predicate<E> pred, int start) {
+    default Optional<T> find(Predicate<T> pred, int start) {
         final int n = size();
         for (int i = start; i < n; i++) {
-            E value = at(i);
+            T value = at(i);
             if (pred.test(value))
                 return Optional.of(value);
         }
         return Optional.empty();
     }
 
-    default boolean contains(E o) {
+    default boolean contains(T o) {
         final int n = size();
         for (int i = 0; i < n; i++)
             if (Objects.equals(at(i), o))
@@ -97,7 +90,7 @@ public interface Sequence<E> extends Iterable<E> {
         return false;
     }
 
-    default boolean exists(Predicate<E> pred) {
+    default boolean exists(Predicate<T> pred) {
         final int n = size();
         for (int i = 0; i < n; i++)
             if (pred.test(at(i)))
@@ -105,7 +98,7 @@ public interface Sequence<E> extends Iterable<E> {
         return false;
     }
 
-    default int indexOf(E o) {
+    default int indexOf(T o) {
         final int n = size();
         for (int i = 0; i < n; i++)
             if (Objects.equals(at(i), o))
@@ -113,7 +106,7 @@ public interface Sequence<E> extends Iterable<E> {
         return -1;
     }
 
-    default int indexWhere(Predicate<E> pred) {
+    default int indexWhere(Predicate<T> pred) {
         final int n = size();
         for (int i = 0; i < n; i++)
             if (pred.test(at(i)))
@@ -121,7 +114,7 @@ public interface Sequence<E> extends Iterable<E> {
         return -1;
     }
 
-    default <R> Sequence<R> map(Function<? super E, ? extends R> mapper) {
+    default <R> Sequence<R> map(Function<? super T, ? extends R> mapper) {
         final int n = size();
         @SuppressWarnings("unchecked")
         R[] a = (R[])new Object[n];
@@ -130,7 +123,7 @@ public interface Sequence<E> extends Iterable<E> {
         return createWithoutCopy(a);
     }
 
-    default IntSequence mapToInt(ToIntFunction<? super E> mapper) {
+    default IntSequence mapToInt(ToIntFunction<? super T> mapper) {
         final int n = size();
         int[] a = new int[n];
         for (int i = 0; i < n; i++)
@@ -138,7 +131,7 @@ public interface Sequence<E> extends Iterable<E> {
         return IntSequenceFactory.createWithoutCopy(a);
     }
 
-    default LongSequence mapToLong(ToLongFunction<? super E> mapper) {
+    default LongSequence mapToLong(ToLongFunction<? super T> mapper) {
         final int n = size();
         long[] a = new long[n];
         for (int i = 0; i < n; i++)
@@ -146,7 +139,7 @@ public interface Sequence<E> extends Iterable<E> {
         return LongSequenceFactory.createWithoutCopy(a);
     }
 
-    default DoubleSequence mapToDouble(ToDoubleFunction<? super E> mapper) {
+    default DoubleSequence mapToDouble(ToDoubleFunction<? super T> mapper) {
         final int n = size();
         double[] a = new double[n];
         for (int i = 0; i < n; i++)
@@ -154,27 +147,27 @@ public interface Sequence<E> extends Iterable<E> {
         return DoubleSequenceFactory.createWithoutCopy(a);
     }
 
-    default Optional<E> reduce(BinaryOperator<E> op) {
+    default Optional<T> reduce(BinaryOperator<T> op) {
         final int n = size();
         if (n == 0)
             return Optional.empty();
-        E result = at(0);
+        T result = at(0);
         for (int i = 1; i < n; i++)
             result = op.apply(result, at(i));
         return Optional.of(result);
     }
 
-    default E reduce(E identity, BinaryOperator<E> op) {
+    default T reduce(T identity, BinaryOperator<T> op) {
         final int n = size();
         if (n == 0)
             return identity;
-        E result = identity;
+        T result = identity;
         for (int i = 0; i < n; i++)
             result = op.apply(result, at(i));
         return result;
     }
 
-    default E fold(E value, BiFunction<E, E, E> f) {
+    default T fold(T value, BiFunction<T, T, T> f) {
         switch (size()) {
         case 0:
             return value;
@@ -185,49 +178,49 @@ public interface Sequence<E> extends Iterable<E> {
         }
     }
 
-    default Sequence<E> sort() {
-        E[] values = toArray();
+    default Sequence<T> sort() {
+        T[] values = toArray();
         Arrays.sort(values);
         return seq(values);
     }
 
-    default Sequence<E> sortWith(Comparator<E> cmp) {
-        E[] values = toArray();
+    default Sequence<T> sortWith(Comparator<T> cmp) {
+        T[] values = toArray();
         Arrays.sort(values, cmp);
         return seq(values);
     }
 
-    default Sequence<E> reverse() {
-        E[] a = toArray();
+    default Sequence<T> reverse() {
+        T[] a = toArray();
         final int size = a.length;
         final int n = a.length / 2;
         for (int i = 0, j = size - 1; i < n; i++, j--) {
-            E x = a[j];
+            T x = a[j];
             a[j] = a[i];
             a[i] = x;
         }
         return createWithoutCopy(a);
     }
 
-    default Sequence<E> distinct() {
+    default Sequence<T> distinct() {
         return createWithoutCopy(new LinkedHashSet<>(toList()));
     }
 
     @SuppressWarnings("unchecked")
-    default Sequence<E> concat(Sequence<? extends E> first, Sequence<? extends E>... rest) {
+    default Sequence<T> concat(Sequence<? extends T> first, Sequence<? extends T>... rest) {
         // XXX varargs
         final int selfLength = size();
         final int firstLength = first.size();
         int newLength = selfLength;
         newLength += firstLength;
-        for (Sequence<? extends E> o : rest)
+        for (Sequence<? extends T> o : rest)
             newLength += o.size();
         // XXX copy twice
-        E[] a = Arrays.copyOf(toArray(), newLength);
+        T[] a = Arrays.copyOf(toArray(), newLength);
         int p = selfLength;
         System.arraycopy(first.toArray(), 0, a, p, firstLength);
         p += firstLength;
-        for (Sequence<? extends E> o : rest) {
+        for (Sequence<? extends T> o : rest) {
             final int length = o.size();
             System.arraycopy(o.toArray(), 0, a, p, length);
             p += length;
@@ -235,11 +228,11 @@ public interface Sequence<E> extends Iterable<E> {
         return createWithoutCopy(a);
     }
 
-    E[] toArray();
+    T[] toArray();
 
-    default E[] toArray(IntFunction<E[]> generator) {
+    default T[] toArray(IntFunction<T[]> generator) {
         final int n = size();
-        E[] a = generator.apply(n);
+        T[] a = generator.apply(n);
         for (int i = 0; i < n; i++)
             a[i] = at(i);
         return a;
@@ -261,31 +254,31 @@ public interface Sequence<E> extends Iterable<E> {
         return a;
     }
 
-    default List<E> toList() {
+    default List<T> toList() {
         return Arrays.asList(toArray());
     }
 
-    default Set<E> toSet() {
-        Set<E> set = new HashSet<>();
+    default Set<T> toSet() {
+        Set<T> set = new HashSet<>();
         Collections.addAll(set, toArray());
         return set;
     }
 
-    default <R> Map<E, R> toMapWithKey(Function<? super E, ? extends R> mapper) {
-        Map<E, R> m = new HashMap<>();
-        for (E k : this)
+    default <R> Map<T, R> toMapWithKey(Function<? super T, ? extends R> mapper) {
+        Map<T, R> m = new HashMap<>();
+        for (T k : this)
             m.put(k, mapper.apply(k));
         return m;
     }
 
-    default <R> Map<R, E> toMapWithValue(Function<? super E, ? extends R> mapper) {
-        Map<R, E> m = new HashMap<>();
-        for (E k : this)
+    default <R> Map<R, T> toMapWithValue(Function<? super T, ? extends R> mapper) {
+        Map<R, T> m = new HashMap<>();
+        for (T k : this)
             m.put(mapper.apply(k), k);
         return m;
     }
 
-    default Stream<E> stream() {
+    default Stream<T> stream() {
         return toList().stream();
     }
 

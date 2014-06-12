@@ -11,22 +11,22 @@ final class SequenceFactory {
     }
 
     @SafeVarargs
-    static <E> Sequence<E> createWithoutCopy(E... a) {
+    static <T> Sequence<T> createWithoutCopy(T... a) {
         return new SequenceImpl<>(a);
     }
 
-    static <E> Sequence<E> createWithoutCopy(Collection<E> collection) {
-        SequenceImpl<E> seq = new SequenceImpl<>(collection);
+    static <T> Sequence<T> createWithoutCopy(Collection<T> collection) {
+        SequenceImpl<T> seq = new SequenceImpl<>(collection);
         return seq;
     }
 
     @SafeVarargs
-    static <E> Sequence<E> createWithCopy(E... a) {
+    static <T> Sequence<T> createWithCopy(T... a) {
         return new SequenceImpl<>(Arrays.copyOf(a, a.length));
     }
 
-    static <E> Sequence<E> createWithCopy(Collection<E> collection) {
-        Collection<E> copy = new ArrayList<>(collection);
+    static <T> Sequence<T> createWithCopy(Collection<T> collection) {
+        Collection<T> copy = new ArrayList<>(collection);
         return new SequenceImpl<>(copy);
     }
 

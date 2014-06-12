@@ -9,8 +9,8 @@ import org.junit.*;
 public final class SequenceImplTest {
 
     @SafeVarargs
-    static <E> SequenceImpl<E> seq0(E... a) {
-        SequenceImpl<E> x = (SequenceImpl<E>)SequenceFactory.createWithCopy(a);
+    static <T> SequenceImpl<T> seq0(T... a) {
+        SequenceImpl<T> x = (SequenceImpl<T>)SequenceFactory.createWithCopy(a);
         return x;
     }
 

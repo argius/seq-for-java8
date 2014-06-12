@@ -3,40 +3,40 @@ package net.argius.java8.seq;
 import java.util.*;
 import java.util.function.*;
 
-final class SequenceImpl<E> implements Sequence<E> {
+final class SequenceImpl<T> implements Sequence<T> {
 
     final int size;
-    final private E[] values;
+    final private T[] values;
 
     @SafeVarargs
-    SequenceImpl(E... a) {
+    SequenceImpl(T... a) {
         this.size = a.length;
         this.values = a;
     }
 
-    SequenceImpl(Collection<E> a) {
+    SequenceImpl(Collection<T> a) {
         this.size = a.size();
         @SuppressWarnings("unchecked")
-        final E[] array = (E[])a.toArray();
+        final T[] array = (T[])a.toArray();
         this.values = array;
     }
 
     // accessors
 
     @Override
-    public E at(int index) {
+    public T at(int index) {
         return values[index];
     }
 
     @Override
-    public Iterator<E> iterator() {
+    public Iterator<T> iterator() {
         return new IteratorImpl();
     }
 
     // maps
 
     @Override
-    public <R> Sequence<R> map(Function<? super E, ? extends R> mapper) {
+    public <R> Sequence<R> map(Function<? super T, ? extends R> mapper) {
         @SuppressWarnings("unchecked")
         R[] a = (R[])new Object[size];
         for (int i = 0, n = size; i < n; i++)
@@ -52,9 +52,9 @@ final class SequenceImpl<E> implements Sequence<E> {
     // filters
 
     @Override
-    public Sequence<E> filter(Predicate<? super E> predicate) {
+    public Sequence<T> filter(Predicate<? super T> predicate) {
         @SuppressWarnings("unchecked")
-        E[] a = (E[])new Object[size];
+        T[] a = (T[])new Object[size];
         int p = 0;
         for (int i = 0, n = size; i < n; i++)
             if (predicate.test(values[i]))
@@ -65,8 +65,8 @@ final class SequenceImpl<E> implements Sequence<E> {
     // converters
 
     @Override
-    public Set<E> toSet() {
-        Set<E> set = new HashSet<>();
+    public Set<T> toSet() {
+        Set<T> set = new HashSet<>();
         Collections.addAll(set, values);
         return set;
     }
@@ -80,23 +80,23 @@ final class SequenceImpl<E> implements Sequence<E> {
     }
 
     @Override
-    public <R> Map<E, R> toMapWithKey(Function<? super E, ? extends R> mapper) {
-        Map<E, R> m = new HashMap<>();
+    public <R> Map<T, R> toMapWithKey(Function<? super T, ? extends R> mapper) {
+        Map<T, R> m = new HashMap<>();
         for (int i = 0; i < size; i++)
             m.put(values[i], mapper.apply(values[i]));
         return m;
     }
 
     @Override
-    public <R> Map<R, E> toMapWithValue(Function<? super E, ? extends R> mapper) {
-        Map<R, E> m = new HashMap<>();
+    public <R> Map<R, T> toMapWithValue(Function<? super T, ? extends R> mapper) {
+        Map<R, T> m = new HashMap<>();
         for (int i = 0; i < size; i++)
             m.put(mapper.apply(values[i]), values[i]);
         return m;
     }
 
     @Override
-    public E[] toArray() {
+    public T[] toArray() {
         return Arrays.copyOf(values, size);
     }
 
@@ -130,7 +130,7 @@ final class SequenceImpl<E> implements Sequence<E> {
         return Arrays.toString(values);
     }
 
-    final class IteratorImpl implements Iterator<E> {
+    final class IteratorImpl implements Iterator<T> {
 
         private int p;
 
@@ -149,7 +149,7 @@ final class SequenceImpl<E> implements Sequence<E> {
         }
 
         @Override
-        public E next() {
+        public T next() {
             return at(p);
         }
 

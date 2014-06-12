@@ -10,19 +10,19 @@ import org.junit.*;
 
 public final class SequenceTest {
 
-    static final class SequenceImpl0<E> implements Sequence<E> {
+    static final class SequenceImpl0<T> implements Sequence<T> {
 
         int size;
-        private E[] values;
+        private T[] values;
 
         @SafeVarargs
-        SequenceImpl0(E... a) {
+        SequenceImpl0(T... a) {
             this.size = a.length;
             this.values = a;
         }
 
         @Override
-        public E at(int index) {
+        public T at(int index) {
             return values[index];
         }
 
@@ -43,7 +43,7 @@ public final class SequenceTest {
         }
 
         @Override
-        public Sequence<E> filter(Predicate<? super E> predicate) {
+        public Sequence<T> filter(Predicate<? super T> predicate) {
             throw new UnsupportedOperationException();
         }
 
@@ -57,7 +57,7 @@ public final class SequenceTest {
         }
 
         @Override
-        public Iterator<E> iterator() {
+        public Iterator<T> iterator() {
             return new IteratorImpl();
         }
 
@@ -67,7 +67,7 @@ public final class SequenceTest {
         }
 
         @Override
-        public E[] toArray() {
+        public T[] toArray() {
             return Arrays.copyOf(values, size);
         }
 
@@ -76,7 +76,7 @@ public final class SequenceTest {
             return Arrays.toString(values);
         }
 
-        final class IteratorImpl implements Iterator<E> {
+        final class IteratorImpl implements Iterator<T> {
 
             private int p;
 
@@ -95,7 +95,7 @@ public final class SequenceTest {
             }
 
             @Override
-            public E next() {
+            public T next() {
                 return at(p);
             }
 
@@ -104,7 +104,7 @@ public final class SequenceTest {
     }
 
     @SafeVarargs
-    static <E> Sequence<E> seq0(E... a) {
+    static <T> Sequence<T> seq0(T... a) {
         return new SequenceImpl0<>(Arrays.copyOf(a, a.length));
     }
 
