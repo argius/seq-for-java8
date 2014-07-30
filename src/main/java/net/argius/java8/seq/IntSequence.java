@@ -108,6 +108,11 @@ public interface IntSequence {
         return (count == 0) ? empty() : subSequence(0, count - 1);
     }
 
+    default IntSequence takeWhile(IntPredicate pred) {
+        final int index = indexWhere(pred.negate());
+        return (index > 0) ? subSequence(0, index - 1) : empty();
+    }
+
     default IntSequence drop(int count) {
         final int n = size();
         return (count >= n) ? empty() : subSequence(count, n);

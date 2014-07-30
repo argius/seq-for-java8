@@ -9,7 +9,7 @@ public final class MetaTest {
 
     static final String[] methodList1 = { "at", "concat", "distinct", "drop", "empty", "exists", "filter", "find",
             "fold", "forEach", "head", "indexWhere", "map", "of", "reduce", "reverse", "seq", "size", "sort",
-            "sortWith", "stream", "subSequence", "tail", "take", "toArray", };
+            "sortWith", "stream", "subSequence", "tail", "take", "takeWhile", "toArray", };
 
     static final String[] methodListForNumber = { "average", "mapToObj", "max", "min", "sum", };
     static final String[] methodListExceptInt = { "mapToInt", };

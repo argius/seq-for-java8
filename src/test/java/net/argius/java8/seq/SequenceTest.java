@@ -306,6 +306,14 @@ public final class SequenceTest {
     }
 
     @Test
+    public void testTakeWhile() {
+        Sequence<String> i1 = seq("java", "scala", "perl", "ruby");
+        assertEquals(seq("java", "scala"), i1.takeWhile(x -> !x.equals("perl")));
+        assertEquals(seq("java"), i1.takeWhile(x -> !x.equals("scala")));
+        assertEquals(seq(), i1.takeWhile(x -> x.equals("perl")));
+    }
+
+    @Test
     public void testToArrayIntFunctionOfE() {
         assertArrayEquals(arr("11", "22"), seq0("11", "22").toArray(String[]::new));
     }

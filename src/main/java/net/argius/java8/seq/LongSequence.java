@@ -59,13 +59,13 @@ public interface LongSequence {
 
     long at(int index);
 
-    default LongSequence filter(LongPredicate predicate) {
+    default LongSequence filter(LongPredicate pred) {
         final int n = size();
         int p = 0;
         long[] a = new long[n];
         for (int i = 0; i < n; i++) {
             long x = at(i);
-            if (predicate.test(x))
+            if (pred.test(x))
                 a[p++] = x;
         }
         return createWithoutCopy(Arrays.copyOf(a, p));
@@ -81,6 +81,11 @@ public interface LongSequence {
 
     default LongSequence take(int count) {
         return (count == 0) ? empty() : subSequence(0, count - 1);
+    }
+
+    default LongSequence takeWhile(LongPredicate pred) {
+        final int index = indexWhere(pred.negate());
+        return (index > 0) ? subSequence(0, index - 1) : empty();
     }
 
     default LongSequence drop(int count) {

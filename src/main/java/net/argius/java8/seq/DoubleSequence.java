@@ -58,13 +58,13 @@ public interface DoubleSequence {
 
     double at(int index);
 
-    default DoubleSequence filter(DoublePredicate predicate) {
+    default DoubleSequence filter(DoublePredicate pred) {
         final int n = size();
         int p = 0;
         double[] a = new double[n];
         for (int i = 0; i < n; i++) {
             double x = at(i);
-            if (predicate.test(x))
+            if (pred.test(x))
                 a[p++] = x;
         }
         return createWithoutCopy(Arrays.copyOf(a, p));
@@ -80,6 +80,11 @@ public interface DoubleSequence {
 
     default DoubleSequence take(int count) {
         return (count == 0) ? empty() : subSequence(0, count - 1);
+    }
+
+    default DoubleSequence takeWhile(DoublePredicate pred) {
+        final int index = indexWhere(pred.negate());
+        return (index > 0) ? subSequence(0, index - 1) : empty();
     }
 
     default DoubleSequence drop(int count) {

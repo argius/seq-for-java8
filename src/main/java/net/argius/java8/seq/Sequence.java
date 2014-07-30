@@ -57,6 +57,11 @@ public interface Sequence<T> extends Iterable<T> {
         return (count == 0) ? empty() : subSequence(0, count - 1);
     }
 
+    default Sequence<T> takeWhile(Predicate<T> pred) {
+        final int index = indexWhere(pred.negate());
+        return (index > 0) ? subSequence(0, index - 1) : empty();
+    }
+
     default Sequence<T> drop(int count) {
         final int n = size();
         return (count >= n) ? empty() : subSequence(count, n);

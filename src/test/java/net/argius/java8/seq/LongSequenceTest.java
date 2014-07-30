@@ -268,6 +268,13 @@ public class LongSequenceTest {
     }
 
     @Test
+    public void testTakeWhile() {
+        assertEquals(seq(23L, 34), seq(23L, 34, 1, 5, 19).takeWhile(x -> x > 3));
+        assertEquals(seq(23L), seq(23L, 34, 1, 5, 19).takeWhile(x -> x < 30));
+        assertEquals(seq(), seq(23L, 34, 1, 5, 19).takeWhile(x -> x < 3));
+    }
+
+    @Test
     public void testToArray() {
         // fail("Not yet implemented");
     }

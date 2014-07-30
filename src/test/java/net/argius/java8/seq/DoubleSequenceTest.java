@@ -247,6 +247,13 @@ public class DoubleSequenceTest {
     }
 
     @Test
+    public void testTakeWhile() {
+        assertEquals(seq(134.2d, -53), seq(134.2d, -53, 343, 8, 3, -1).takeWhile(x -> x < 300));
+        assertEquals(seq(134.2d), seq(134.2d, -53, 343, 8, 3, -1).takeWhile(x -> x > 3));
+        assertEquals(seq(), seq(0.4d, 23.1, 31.3).takeWhile(x -> x <= 0));
+    }
+
+    @Test
     public void testToArray() {
         // fail("Not yet implemented");
     }
