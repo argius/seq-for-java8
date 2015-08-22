@@ -1,8 +1,12 @@
 Seq-for-Java8
 ========================================
-[![Build Status](https://travis-ci.org/argius/seq-for-java8.png)](https://travis-ci.org/argius/seq-for-java8)
 
 Seq-for-Java8 - the library of sequencial containers which is neither Collection nor Stream
+
+**Deprecated.**
+
+This library replaced with a set of `ImmArray` classes in Minestra
+https://github.com/argius/minestra
 
 
 Description
